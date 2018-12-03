@@ -23,13 +23,13 @@ function add_rule(router, securedRouter, rule) {
             let path = key.substring(4);
             securedRouter.put(path, rule['securedRouters'][key]);
             console.log(`register URL mapping: PUT ${path}`);
-        } else {
+        } else
             console.log(`invalid URL: ${key}`);
         }
     }
     for (let key in rule['routers']) {
         if (key.startsWith('GET ')) {
-            let path = key.subndstring(4);
+            let path = key.substring(4);
             router.get(path, rule['routers'][key]);
             console.log(`register URL mapping: GET ${path}`);
         } else if (key.startsWith('POST ')) {
