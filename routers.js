@@ -23,7 +23,7 @@ function add_rule(router, securedRouter, rule) {
             let path = key.substring(4);
             securedRouter.put(path, rule['securedRouters'][key]);
             console.log(`register URL mapping: PUT ${path}`);
-        } else
+        } else {
             console.log(`invalid URL: ${key}`);
         }
     }
