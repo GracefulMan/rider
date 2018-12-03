@@ -2,5 +2,5 @@
 pm2 stop index.js
 git pull
 echo "copy config file to current folder"
-cp ../config.js ./
+cp ~/config.js ./
 pm2 start index.js
