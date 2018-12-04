@@ -12,10 +12,19 @@ const getUserInfo = async ctx =>{
     ctx.body = userInfo;
     ctx.status = 200;
 };
+const getUserTodo = async ctx =>{
+    let id  = ctx.query.id;
+    let periodsTodo = await UserModel.getUserTodo(id);
+    ctx.body = periodsTodo;
+    ctx.status = 200;
+};
+
 
 module.exports.routers = {
     'GET /getTestInfo':getTestInfo,
-    'GET /getUserInfo':getUserInfo
+    'GET /getUserInfo':getUserInfo,
+    'GET /getUserTodo':getUserTodo,
+
 };
 module.exports.securedRouters = {
 
