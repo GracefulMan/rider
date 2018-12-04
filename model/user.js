@@ -10,7 +10,7 @@ const getUserInfoById=(id)=>{
     return connection.query(_sql);
 };
 const getUserTodo=(uid)=>{
-    let _sql = `SELECT * FROM rider_period WHERE uid = ${uid} && status = 1`;
+    let _sql = `SELECT * FROM rider_period WHERE uid = ${uid} && (status = 1 || status = 3)`;
     return connection.query(_sql);
 };
 const getUserMonthDone=(year, month, uid)=>{

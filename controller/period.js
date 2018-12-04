@@ -8,7 +8,8 @@ const addPeriod = async ctx =>{
     let month = ctx.request.body.month;
     let day = ctx.request.body.day;
     let time = ctx.request.body.time;
-    let addPeriod = await PeriodModel.addPeriod(uid, userphone, timeid, year, month, day, time);
+    let car = ctx.request.body.car;
+    let addPeriod = await PeriodModel.addPeriod(uid, userphone, timeid, year, month, day, time, car);
     let result = {};
     result['addPeriod'] = addPeriod;
     result['msg'] = '添加成功';
