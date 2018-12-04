@@ -1,5 +1,5 @@
 "use strict";
-const PeriodModel = require('../model/peirod');
+const PeriodModel = require('../model/period');
 const addPeriod = async ctx =>{
     let uid  = ctx.request.body.uid;
     let userphone = ctx.request.body.userphone;
