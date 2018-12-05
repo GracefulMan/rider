@@ -13,24 +13,26 @@ const getDayTodo = async ctx =>{
     let day = ctx.request.body.day;
     let uid = ctx.request.body.uid;
     let dayTodo = await HomeModel.getDayTodo(year, month, day);
+    console.log(dayTodo);
     let userDayTodo = await HomeModel.getUserDayTodo(year, month, day, uid);
-    let dayTodoNew = [];
+    console.log(userDayTodo);
     for (let i=0; i<userDayTodo.length; i++) {
         let timeid = userDayTodo[i].timeid;
         for (let j=0; j<dayTodo.length; j++) {
             if (dayTodo[j].id != timeid) {
-                dayTodoNew.push(dayTodo[j]);
-            } ;
+                dayTodo.splice(j,1);
+                break;
+            }
         } ;
     };
-    ctx.body = dayTodoNew;
+    ctx.body = dayTodo;
     ctx.status = 200;
 };
 
 
 module.exports.routers = {
     'POST /getMonthInfo':getMonthInfo,
-    'POST /getDayInfo':getDayTodo,
+    'POST /getDayTodo':getDayTodo,
 
 };
 module.exports.securedRouters = {
