@@ -19,7 +19,7 @@ const getDayTodo = async ctx =>{
     for (let i=0; i<userDayTodo.length; i++) {
         let timeid = userDayTodo[i].timeid;
         for (let j=0; j<dayTodo.length; j++) {
-            if (dayTodo[j].id != timeid) {
+            if (dayTodo[j].id === timeid) {
                 dayTodo.splice(j,1);
                 break;
             }
