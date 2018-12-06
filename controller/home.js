@@ -9,8 +9,14 @@ const getMonthInfo = async ctx =>{
     for (let i=0; i<monthInfoAll.length; i++) {
       let dayInfo = monthInfoAll[i];
       dayInfo['status'] = 2;
+      for (let j=0; i<monthInfoTodo.length; i++) {
+          if (monthInfoTodo[j].day === dayInfo.day) {
+              dayInfo.status = 1;
+              break;
+          }
+      }
       monthInfo.push(dayInfo)
-    };
+    }
     ctx.body = monthInfo;
     ctx.status = 200;
 };
@@ -30,8 +36,8 @@ const getDayTodo = async ctx =>{
                 dayTodo.splice(j,1);
                 break;
             }
-        } ;
-    };
+        }
+    }
     ctx.body = dayTodo;
     ctx.status = 200;
 };
