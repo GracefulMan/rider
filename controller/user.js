@@ -23,6 +23,9 @@ const getUserMonthDone = async ctx =>{
     let month = ctx.request.body.month;
     let uid = ctx.request.body.uid;
     let userMonthDone = await UserModel.getUserMonthDone(year, month, uid);
+    for (let i=0; i<userMonthDone.length; i++) {
+        userMonthDone[i]['status'] = 3;
+    }
     ctx.body = userMonthDone;
     ctx.status = 200;
 };

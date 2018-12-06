@@ -9,15 +9,15 @@ const getMonthInfo = async ctx =>{
     console.log(monthInfoAll);
     let monthInfo = [];
     for (let i=0; i<monthInfoAll.length; i++) {
-      let dayInfo = monthInfoAll[i];
-      dayInfo['status'] = 2;
-      for (let j=0; j<monthInfoTodo.length; j++) {
+        let dayInfo = monthInfoAll[i];
+        dayInfo['status'] = 2;
+        for (let j=0; j<monthInfoTodo.length; j++) {
           if (monthInfoTodo[j].day === dayInfo.day) {
               dayInfo.status = 1;
               break;
           }
-      }
-      monthInfo.push(dayInfo)
+        }
+        monthInfo.push(dayInfo)
     }
     ctx.body = monthInfo;
     ctx.status = 200;

@@ -14,7 +14,7 @@ const getUserTodo=(uid)=>{
     return connection.query(_sql);
 };
 const getUserMonthDone=(year, month, uid)=>{
-    let _sql = `SELECT DISTINCT day FROM rider_period WHERE year = ${year} && month = ${month} && uid = ${uid} && status = 2`;
+    let _sql = `SELECT DISTINCT year, month, day FROM rider_period WHERE year = ${year} && month = ${month} && uid = ${uid} && status = 2`;
     return connection.query(_sql);
 };
 const getUserDayDone=(year, month, day, uid)=>{
