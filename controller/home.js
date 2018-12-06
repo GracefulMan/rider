@@ -9,7 +9,7 @@ const getMonthInfo = async ctx =>{
     for (let i=0; i<monthInfoAll.length; i++) {
       let dayInfo = monthInfoAll[i];
       dayInfo['status'] = 2;
-      for (let j=0; i<monthInfoTodo.length; i++) {
+      for (let j=0; j<monthInfoTodo.length; i++) {
           if (monthInfoTodo[j].day === dayInfo.day) {
               dayInfo.status = 1;
               break;
