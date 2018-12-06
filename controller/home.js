@@ -4,17 +4,20 @@ const getMonthInfo = async ctx =>{
     let year = ctx.request.body.year;
     let month = ctx.request.body.month;
     let monthInfoTodo = await HomeModel.getMonthInfoTodo(year, month);
+    console.log(monthInfoTodo);
     let monthInfoAll = await HomeModel.getMonthInfoAll(year, month);
+    console.log(monthInfoAll);
     let monthInfo = [];
     for (let i=0; i<monthInfoAll.length; i++) {
       let dayInfo = monthInfoAll[i];
       dayInfo['status'] = 2;
+      /*
       for (let j=0; j<monthInfoTodo.length; i++) {
           if (monthInfoTodo[j].day === dayInfo.day) {
               dayInfo.status = 1;
               break;
           }
-      }
+      }*/
       monthInfo.push(dayInfo)
     }
     ctx.body = monthInfo;
@@ -28,7 +31,6 @@ const getDayTodo = async ctx =>{
     let dayTodo = await HomeModel.getDayTodo(year, month, day);
     console.log(dayTodo);
     let userDayTodo = await HomeModel.getUserDayTodo(year, month, day, uid);
-    console.log(userDayTodo);
     for (let i=0; i<userDayTodo.length; i++) {
         let timeid = userDayTodo[i].timeid;
         for (let j=0; j<dayTodo.length; j++) {
