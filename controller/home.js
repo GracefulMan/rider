@@ -3,19 +3,32 @@ const HomeModel = require('../model/home');
 const getMonthInfo = async ctx =>{
     let year = ctx.request.body.year;
     let month = ctx.request.body.month;
+    let uid = ctx.request.body.uid;
     let monthInfoTodo = await HomeModel.getMonthInfoTodo(year, month);
-    console.log(monthInfoTodo);
     let monthInfoAll = await HomeModel.getMonthInfoAll(year, month);
-    console.log(monthInfoAll);
     let monthInfo = [];
     for (let i=0; i<monthInfoAll.length; i++) {
         let dayInfo = monthInfoAll[i];
         dayInfo['status'] = 2;
-        for (let j=0; j<monthInfoTodo.length; j++) {
-          if (monthInfoTodo[j].day === dayInfo.day) {
-              dayInfo.status = 1;
-              break;
-          }
+        for (let j = 0; j < monthInfoTodo.length; j++) {
+            if (monthInfoTodo[j].day === dayInfo.day) {
+                let day = dayInfo.day;
+                let dayTodo = await HomeModel.getDayTodo(year, month, day);
+                let userDayTodo = await HomeModel.getUserDayTodo(year, month, day, uid);
+                for (let i=0; i<userDayTodo.length; i++) {
+                    let timeid = userDayTodo[i].timeid;
+                    for (let j=0; j<dayTodo.length; j++) {
+                        if (dayTodo[j].id === timeid) {
+                            dayTodo.splice(j,1);
+                            break;
+                        }
+                    }
+                }
+                if (dayTodo.length !== 0) {
+                    dayInfo.status = 1;
+                }
+                break;
+            }
         }
         monthInfo.push(dayInfo)
     }
@@ -28,7 +41,6 @@ const getDayTodo = async ctx =>{
     let day = ctx.request.body.day;
     let uid = ctx.request.body.uid;
     let dayTodo = await HomeModel.getDayTodo(year, month, day);
-    console.log(dayTodo);
     let userDayTodo = await HomeModel.getUserDayTodo(year, month, day, uid);
     for (let i=0; i<userDayTodo.length; i++) {
         let timeid = userDayTodo[i].timeid;
