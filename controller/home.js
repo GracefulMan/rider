@@ -3,7 +3,14 @@ const HomeModel = require('../model/home');
 const getMonthInfo = async ctx =>{
     let year = ctx.request.body.year;
     let month = ctx.request.body.month;
-    let monthInfo = await HomeModel.getMonthInfo(year, month);
+    let monthInfoTodo = await HomeModel.getMonthInfoTodo(year, month);
+    let monthInfoAll = await HomeModel.getMonthInfoAll(year, month);
+    let monthInfo = [];
+    for (let i=0; i<monthInfoAll.length; i++) {
+      let dayInfo = monthInfoAll[i];
+      dayInfo['status'] = 2;
+      monthInfo.push(dayInfo)
+    };
     ctx.body = monthInfo;
     ctx.status = 200;
 };

@@ -1,7 +1,11 @@
 'use strict';
 const connection=require('../index');
-const getMonthInfo=(year, month)=>{
-    let _sql = `SELECT DISTINCT day FROM time_schedule WHERE year = ${year} && month = ${month} && status = 1`;
+const getMonthInfoTodo=(year, month)=>{
+    let _sql = `SELECT DISTINCT year, month, day FROM time_schedule WHERE year = ${year} && month = ${month} && status = 1`;
+    return connection.query(_sql);
+};
+const getMonthInfoAll=(year, month)=>{
+    let _sql = `SELECT DISTINCT year, month, day FROM time_schedule WHERE year = ${year} && month = ${month} && (status = 1 || status = 2)`;
     return connection.query(_sql);
 };
 const getDayTodo=(year, month, day)=>{
@@ -14,7 +18,8 @@ const getUserDayTodo=(year, month, day, uid)=>{
 };
 
 module.exports={
-    getMonthInfo,
+    getMonthInfoTodo,
+    getMonthInfoAll,
     getDayTodo,
     getUserDayTodo
 };
