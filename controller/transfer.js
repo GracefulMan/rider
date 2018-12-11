@@ -12,7 +12,7 @@ const getMyTransfer = async ctx =>{
         let timeList = [];
         for (let j=0; j<periods.length; j++) {
             console.log(Number(periods[j]))
-            let period = await PeriodModel.getPeriod(1);
+            let period = await PeriodModel.getPeriod(Number(periods[j]));
             timeList.push(period);
             console.log(period);
         }
