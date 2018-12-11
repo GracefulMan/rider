@@ -10,7 +10,13 @@ const deletePeriod=(id)=>{
     return connection.query(_sql);
 };
 
+const getPeriod=(id)=>{
+    let _sql = `SELECT * FROM rider_period WHERE id = ${id}`;
+    return connection.query(_sql);
+};
+
 module.exports={
     addPeriod,
-    deletePeriod
+    deletePeriod,
+    getPeriod
 };
