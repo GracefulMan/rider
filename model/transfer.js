@@ -5,13 +5,13 @@ const getMyTransfer=(uidA, status)=>{
     return connection.query(_sql);
 };
 
-const submitMyTransfer=(id)=>{
-    let _sql = `DELETE FROM rider_period WHERE id = ${id};`;
+const submitMyTransfer=(uidA, userphoneA, userB, userphoneB, periods, status)=>{
+    let _sql = `INSERT INTO rider_transfer (uidA, userphoneA, userB, userphoneB, periods, status)VALUES(${uidA}, ${userphoneA}, ${uidB}, ${userphoneB}, ${periods}, ${status});`;
     return connection.query(_sql);
 };
 
 const cancelMyTransfer=(id)=>{
-    let _sql = `DELETE FROM rider_period WHERE id = ${id};`;
+    let _sql = `UPDATE rider_transfer SET status = 4 WHERE id = ${id};`;
     return connection.query(_sql);
 };
 
@@ -21,12 +21,18 @@ const getOthersTransfer=(uidB, status)=>{
 };
 
 const acceptOthersTransfer=(id)=>{
-    let _sql = `DELETE FROM rider_period WHERE id = ${id};`;
+    let _sql = `UPDATE rider_transfer SET status = 2 WHERE id = ${id};`;
     return connection.query(_sql);
 };
 
 const rejectOthersTransfer=(id)=>{
-    let _sql = `DELETE FROM rider_period WHERE id = ${id};`;
+    let _sql = `UPDATE rider_transfer SET status = 3 WHERE id = ${id};`;
+    return connection.query(_sql);
+};
+
+
+const getTransferById=(id)=>{
+    let _sql = `SELECT * FROM rider_transfer WHERE id = ${id};`;
     return connection.query(_sql);
 };
 
@@ -36,5 +42,6 @@ module.exports={
     cancelMyTransfer,
     getOthersTransfer,
     acceptOthersTransfer,
-    rejectOthersTransfer
+    rejectOthersTransfer,
+    getTransferById
 };

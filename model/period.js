@@ -15,8 +15,16 @@ const getPeriod=(id)=>{
     return connection.query(_sql);
 };
 
+
+const getTimeidById=(id)=>{
+    let _sql = `SELECT timeid FROM rider_period WHERE id = ${id}`;
+    return connection.query(_sql);
+};
+
 module.exports={
     addPeriod,
     deletePeriod,
-    getPeriod
+    getPeriod,
+
+    getTimeidById
 };
