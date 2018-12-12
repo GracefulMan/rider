@@ -22,7 +22,7 @@ const getTimeidById=(id)=>{
 };
 
 const getPeriodByUidTimeid=(uid, timeid)=>{
-    let _sql = `SELECT * FROM rider_period WHERE uid = ${uid} && timeid = ${timeid} && (status = 1 || status = 3)`;
+    let _sql = `SELECT * FROM rider_period WHERE uid = ${uid} && timeid = ${timeid} && (status = 1 || status = 3);`;
     return connection.query(_sql);}
 
 module.exports={

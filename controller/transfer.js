@@ -73,6 +73,7 @@ const acceptOthersTransfer = async ctx =>{
         let period = await PeriodModel.getTimeidById(periods[i]);
         let timeid = period[0].timeid;
         let uidBPeriod = await PeriodModel.getPeriodByUidTimeid(uidB, timeid);
+        console.log(uidBPeriod);
         if (uidBPeriod > 0) {
             uidBPeriods.push(uidBPeriod[0])
         }
