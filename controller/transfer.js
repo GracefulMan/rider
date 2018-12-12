@@ -67,7 +67,7 @@ const getOthersTransfer = async ctx =>{
             timeList.push(period[0]);
         }
         othersTransfer[i]['timeList'] = timeList;
-        console.log(othsersTransfer);
+        console.log(othersTransfer);
     }
     let result = othersTransfer;
     ctx.body = result;
