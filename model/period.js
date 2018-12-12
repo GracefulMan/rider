@@ -21,10 +21,15 @@ const getTimeidById=(id)=>{
     return connection.query(_sql);
 };
 
+const getPeriodByUidTimeid=(uid, timeid)=>{
+    let _sql = `SELECT * FROM rider_period WHERE uid = ${uid} && timeid = ${timeid} && (status = 1 || status = 3)`;
+    return connection.query(_sql);}
+
 module.exports={
     addPeriod,
     deletePeriod,
     getPeriod,
 
-    getTimeidById
+    getTimeidById,
+    getPeriodByUidTimeid
 };

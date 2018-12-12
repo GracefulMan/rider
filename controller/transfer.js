@@ -68,17 +68,29 @@ const acceptOthersTransfer = async ctx =>{
     let transfer = await  TransferModel.getTransferById(id);
     let periods = transfer[0].periods.split(",");
     let uidB = transfer.uidB;
+    let uidBPeriods = []; // 骑手B待完成相冲突的时段
     for (let i=0; i< periods.length; i++) {
         let period = await PeriodModel.getTimeidById(periods[i]);
         let timeid = period[0].timeid;
-        console.log(timeid);
+        let uidBPeriod = await PeriodModel.getPeriodByUidTimeid(uidB, timeid);
+        if (uidBPeriod > 0) {
+            uidBPeriods.push(uidBPeriod[0])
+        }
     }
-    let acceptOthersTransfer = await TransferModel.acceptOthersTransfer(id);
     let result = {};
-    result['return'] = acceptOthersTransfer;
-    result['msg'] = '删除成功';
-    ctx.body = result;
-    ctx.status = 200;
+    console.log(uidBPeriods);
+    if (uidBPeriods.length > 0) {
+        result['return'] = uidBPeriods;
+        result['msg'] = '骑手有冲突班次';
+        ctx.body = result;
+        ctx.status = 403;
+    } else {
+        let acceptOthersTransfer = await TransferModel.acceptOthersTransfer(id);
+        result['return'] = acceptOthersTransfer;
+        result['msg'] = '删除成功';
+        ctx.body = result;
+        ctx.status = 200;
+    }
 };
 const rejectOthersTransfer = async ctx =>{
     let id  = ctx.request.body.id;
