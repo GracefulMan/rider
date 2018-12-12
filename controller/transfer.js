@@ -67,7 +67,7 @@ const acceptOthersTransfer = async ctx =>{
     let id  = ctx.request.body.id;
     let transfer = await  TransferModel.getTransferById(id);
     let periods = transfer[0].periods.split(",");
-    let uidB = transfer.uidB;
+    let uidB = transfer[0].uidB;
     let uidBPeriods = []; // 骑手B待完成相冲突的时段
     for (let i=0; i< periods.length; i++) {
         let period = await PeriodModel.getTimeidById(periods[i]);
