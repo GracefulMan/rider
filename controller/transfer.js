@@ -66,7 +66,7 @@ const getOthersTransfer = async ctx =>{
 const acceptOthersTransfer = async ctx =>{
     let id  = ctx.request.body.id;
     let transfer = await  TransferModel.getTransferById(id);
-    let periods = transfer.periods.split(",");
+    let periods = transfer[0].periods.split(",");
     let uidB = transfer.uidB;
     for (let i=0; i< periods.length; i++) {
         let timeid = await PeriodModel.getTimeidById(periods[i]);
