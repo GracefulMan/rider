@@ -1,7 +1,7 @@
 'use strict';
 const connection=require('../index');
 const getMyTransfer=(uidA, status)=>{
-    let _sql = `SELECT * FROM rider_transfer WHERE uidA = ${uidA} && status = ${status}`;
+    let _sql = `SELECT * FROM rider_transfer WHERE uidA = ${uidA} && status = ${status};`;
     return connection.query(_sql);
 };
 
@@ -15,8 +15,8 @@ const cancelMyTransfer=(id)=>{
     return connection.query(_sql);
 };
 
-const getOthersTransfer=(id)=>{
-    let _sql = `DELETE FROM rider_period WHERE id = ${id};`;
+const getOthersTransfer=(uidB, status)=>{
+    let _sql = `SELECT * FROM rider_transfer WHERE uidB = ${uidB} && status = ${status};`;
     return connection.query(_sql);
 };
 
