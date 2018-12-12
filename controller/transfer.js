@@ -11,17 +11,13 @@ const getMyTransfer = async ctx =>{
         console.log(periods);
         let timeList = [];
         for (let j=0; j<periods.length; j++) {
-            console.log(Number(periods[j]))
             let period = await PeriodModel.getPeriod(Number(periods[j]));
-            timeList.push(period);
-            console.log(period);
+            timeList.push(period[0]);
         }
         myTransfer[i]['timeList'] = timeList;
         console.log(myTransfer);
     }
-    let result = {};
-    result['myTransfer'] = myTransfer;
-    result['msg'] = '查询成功';
+    let result = myTransfer;
     ctx.body = result;
     ctx.status = 200;
 };
