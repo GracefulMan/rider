@@ -17,8 +17,7 @@ const getMyTransfer = async ctx =>{
         myTransfer[i]['timeList'] = timeList;
         console.log(myTransfer);
     }
-    let result = myTransfer;
-    ctx.body = result;
+    ctx.body = myTransfer;
     ctx.status = 200;
 };
 const submitMyTransfer = async ctx =>{
@@ -27,19 +26,50 @@ const submitMyTransfer = async ctx =>{
     let uidB  = ctx.request.body.uidB;
     let userphoneB = ctx.request.body.userphoneB;
     let periods = ctx.request.body.periods;
-    let addPeriod = await PeriodModel.addPeriod(uid, userphone, timeid, year, month, day, time, car);
+    let periodsArray = periods.split(",");
+    let uidBPeriods = [];  // 骑手B待完成相冲突的时段
+    for (let i=0; i< periodsArray.length; i++) {
+        let period = await PeriodModel.getTimeidById(periodsArray[i]);
+        let timeid = period[0].timeid;
+        let uidBPeriod = await PeriodModel.getPeriodByUidTimeid(uidB, timeid);
+        if (uidBPeriod.length > 0) {
+            uidBPeriods.push(uidBPeriod[0])
+        }
+    }
     let result = {};
-    result['addPeriod'] = addPeriod;
-    result['msg'] = '添加成功';
-    ctx.body = result;
-    ctx.status = 200;
+    if (uidBPeriods.length > 0) {  // 骑手B班次冲突
+        result['return'] = uidBPeriods;
+        result['msg'] = '骑手有冲突班次';
+        ctx.body = result;
+        ctx.status = 403;
+    } else {
+        let submitMyTransfer = await TransferModel.submitMyTransfer(uidA, userphoneA, uidB, userphoneB, periods);  // 代班请求改为转让中状态
+        for (let i=0; i< periodsArray.length; i++) {  // 送餐时段骑手信息改为B，状态改为待完成
+            let period = await PeriodModel.getPeriod(periods[i]);
+            if (period[0].status === 1) {
+                await PeriodModel.updatePeriodStatus(periods[i], 3);
+            }
+        }
+        result['return'] = submitMyTransfer;
+        result['msg'] = '提交成功';
+        ctx.body = result;
+        ctx.status = 200;
+    }
 };
 const cancelMyTransfer = async ctx =>{
     let id  = ctx.request.body.id;
-    let cancelMyTransfer = await TransferModel.cancelMyTransfer(id);
+    let cancelMyTransfer = await TransferModel.cancelMyTransfer(id);  // 代班请求改为取消状态
+    let transfer = await TransferModel.getTransferById(id);
+    let periods = transfer[0].periods.split(",");
+    for (let i=0; i<periods.length; i++) {  // 骑手A对应班次状态回到待完成
+        let period = await PeriodModel.getPeriod(periods[i]);
+        if (period[0].status === 3) {
+            await PeriodModel.updatePeriodStatus(periods[i], 1);
+        }
+    }
     let result = {};
     result['return'] = cancelMyTransfer;
-    result['msg'] = '删除成功';
+    result['msg'] = '取消成功';
     ctx.body = result;
     ctx.status = 200;
 };
@@ -67,39 +97,49 @@ const acceptOthersTransfer = async ctx =>{
     let id  = ctx.request.body.id;
     let transfer = await  TransferModel.getTransferById(id);
     let periods = transfer[0].periods.split(",");
-    console.log(periods);
     let uidB = transfer[0].uidB;
-    console.log(uidB);
-    let uidBPeriods = []; // 骑手B待完成相冲突的时段
+    let userphoneB = transfer[0].userphoneB;
+    let uidBPeriods = [];  // 骑手B待完成相冲突的时段
     for (let i=0; i< periods.length; i++) {
         let period = await PeriodModel.getTimeidById(periods[i]);
-        console.log(period);
         let timeid = period[0].timeid;
-        console.log(timeid);
         let uidBPeriod = await PeriodModel.getPeriodByUidTimeid(uidB, timeid);
-        console.log(uidBPeriod);
         if (uidBPeriod.length > 0) {
             uidBPeriods.push(uidBPeriod[0])
         }
     }
     let result = {};
-    console.log(uidBPeriods);
-    if (uidBPeriods.length > 0) {
+    if (uidBPeriods.length > 0) {  // 骑手B班次冲突
         result['return'] = uidBPeriods;
         result['msg'] = '骑手有冲突班次';
         ctx.body = result;
         ctx.status = 403;
     } else {
-        let acceptOthersTransfer = await TransferModel.acceptOthersTransfer(id);
+        let acceptOthersTransfer = await TransferModel.acceptOthersTransfer(id);  // 代班请求改为已接受状态
+        for (let i=0; i< periods.length; i++) {  // 送餐时段骑手信息改为B，状态改为待完成
+            let period = await PeriodModel.getPeriod(periods[i]);
+            if (period[0].status === 3) {
+                await PeriodModel.updatePeriodStatus(periods[i], 1);
+                await PeriodModel.updatePeriodUser(periods[i], uidB, userphoneB);
+            }
+        }
         result['return'] = acceptOthersTransfer;
-        result['msg'] = '删除成功';
+        result['msg'] = '接受成功';
         ctx.body = result;
         ctx.status = 200;
     }
 };
 const rejectOthersTransfer = async ctx =>{
     let id  = ctx.request.body.id;
-    let rejectOthersTransfer = await TransferModel.rejectOthersTransfer(id);
+    let rejectOthersTransfer = await TransferModel.rejectOthersTransfer(id);  // 代班请求改为被拒绝状态
+    let transfer = await TransferModel.getTransferById(id);
+    let periods = transfer[0].periods.split(",");
+    for (let i=0; i<periods.length; i++) {  // 骑手A对应班次状态回到待完成
+        let period = await PeriodModel.getPeriod(periods[i]);
+        if (period[0].status === 3) {
+            await PeriodModel.updatePeriodStatus(periods[i], 1);
+        }
+    }
     let result = {};
     result['return'] = rejectOthersTransfer;
     result['msg'] = '拒绝成功';

@@ -23,7 +23,18 @@ const getTimeidById=(id)=>{
 
 const getPeriodByUidTimeid=(uid, timeid)=>{
     let _sql = `SELECT * FROM rider_period WHERE uid = ${uid} && timeid = ${timeid} && (status = 1 || status = 3);`;
-    return connection.query(_sql);}
+    return connection.query(_sql);
+};
+
+const updatePeriodStatus=(id, status)=>{
+    let _sql = `UPDATE rider_period SET status = ${status} WHERE id = ${id};`;
+    return connection.query(_sql);
+};
+
+const updatePeriodUser=(id, uid, userphone)=>{
+    let _sql = `UPDATE rider_period SET uid = ${uid}, userphone = ${userphone} WHERE id = ${id};`;
+    return connection.query(_sql);
+};
 
 module.exports={
     addPeriod,
@@ -31,5 +42,7 @@ module.exports={
     getPeriod,
 
     getTimeidById,
-    getPeriodByUidTimeid
+    getPeriodByUidTimeid,
+    updatePeriodStatus,
+    updatePeriodUser
 };
