@@ -45,10 +45,11 @@ const submitMyTransfer = async ctx =>{
         ctx.status = 403;
     } else {
         let submitMyTransfer = await TransferModel.submitMyTransfer(uidA, userphoneA, uidB, userphoneB, periods);  // 代班请求改为转让中状态
-        for (let i=0; i< periodsArray.length; i++) {  // 送餐时段骑手信息改为B，状态改为待完成
-            let period = await PeriodModel.getPeriod(periods[i]);
+        for (let i=0; i< periodsArray.length; i++) {  // 骑手A对应班次状态改为待完成
+            let period = await PeriodModel.getPeriod(periodsArray[i]);
+            console.log(period);
             if (period[0].status === 1) {
-                await PeriodModel.updatePeriodStatus(periods[i], 3);
+                await PeriodModel.updatePeriodStatus(periodsArray[i], 3);
             }
         }
         result['return'] = submitMyTransfer;
