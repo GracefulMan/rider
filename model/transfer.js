@@ -5,7 +5,7 @@ const getMyTransfer=(uidA, status)=>{
     return connection.query(_sql);
 };
 
-const submitMyTransfer=(uidA, userphoneA, userB, userphoneB, periods)=>{
+const submitMyTransfer=(uidA, userphoneA, uidB, userphoneB, periods)=>{
     let _sql = `INSERT INTO rider_transfer (uidA, userphoneA, uidB, userphoneB, periods, status)VALUES(${uidA}, ${userphoneA}, ${uidB}, ${userphoneB}, "${periods}", 1);`;
     return connection.query(_sql);
 };
