@@ -30,7 +30,7 @@ const submitMyTransfer = async ctx =>{
     let uidBPeriods = [];  // 骑手B待完成相冲突的时段
     for (let i=0; i<periodsArray.length; i++) {
         let period = await PeriodModel.getPeriod(periodsArray[i]);
-        console.log(period)
+        console.log(period);
         let timeid = period[0].timeid;
         let uidBPeriod = await PeriodModel.getPeriodByUidTimeid(uidB, timeid);
         if (uidBPeriod.length > 0) {
