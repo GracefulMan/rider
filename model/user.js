@@ -9,6 +9,10 @@ const getUserInfoById=(id)=>{
     let _sql = `SELECT * FROM user WHERE id = ${id}`;
     return connection.query(_sql);
 };
+const getUserInfoByPhone=(phone)=>{
+    let _sql = `SELECT * FROM user WHERE userphone = ${phone}`;
+    return connection.query(_sql);
+};
 const getUserTodo=(uid)=>{
     let _sql = `SELECT * FROM rider_period WHERE uid = ${uid} && (status = 1 || status = 3)`;
     return connection.query(_sql);
@@ -25,6 +29,7 @@ const getUserDayDone=(year, month, day, uid)=>{
 module.exports={
     getTestById,
     getUserInfoById,
+    getUserInfoByPhone,
     getUserTodo,
     getUserMonthDone,
     getUserDayDone,
