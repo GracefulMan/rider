@@ -1,6 +1,8 @@
 'use strict';
 const config = require('../config');
 const crypto = require('crypto');
+const request = require('request');
+
 const md5 =(name)=>{
     let time=new Date();
     let string = time.toString()+name;
