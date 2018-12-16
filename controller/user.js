@@ -1,7 +1,6 @@
 "use strict";
 const jwt = require('../middleware/jwt');
 const UserModel =  require('../model/user');
-const request = require('request');
 const commonFunction = require('../middleware/commonFunction');
 const config = require('../config');
 
