@@ -5,10 +5,10 @@ const commonFunction = require('../middleware/commonFunction');
 const config = require('../config');
 const request = require('request');
 
-const loginByWechat = async(ctx)=>{
+const loginGetOpenId = async(ctx)=>{
     let code = ctx.query.code;
     let url ="https://api.weixin.qq.com/sns/jscode2session?appid="+config.appid+"&secret="+config.appsecret+"&js_code="+code+"&grant_type=authorization_code";
-    let result =await commonFunction.apireq(url);
+    let result = await commonFunction.apireq(url);
     if(result===undefined||result.length!==28) {
         ctx.status = 410;
         return;
@@ -18,7 +18,7 @@ const loginByWechat = async(ctx)=>{
 
 const loginByWechat2 = async(ctx)=>{
     let code = ctx.query.code;
-    let result =await loginTest(code);
+    let result = await loginTest(code);
     console.log(result);
     /*
     if(result===undefined||result.length!==28) {
@@ -96,7 +96,7 @@ const getUserDayDone = async ctx =>{
 
 
 module.exports.routers = {
-    'GET /loginByWechat':loginByWechat,
+    'GET /loginGetOpenId':loginGetOpenId(),
     'GET /loginByWechat2':loginByWechat2,
 
 

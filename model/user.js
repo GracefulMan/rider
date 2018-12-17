@@ -1,5 +1,12 @@
 'use strict';
 const connection=require('../index');
+
+const addUser=(userphone, nickname, wechat_avatar, openid)=>{
+    let _sql = `INSERT INTO user (userphone, nickname, wechat_avatar, openid, total_time, finish_times, unfinish_times)VALUES
+    (${userphone}, ${nickname}, ${wechat_avatar}, ${openid}, 0, 0, 0);`;
+    return connection.query(_sql);
+};
+
 const getTestById=(id)=>{
     let _sql = `SELECT * FROM user_info WHERE id = ${id}`;
     return connection.query(_sql);
@@ -27,6 +34,8 @@ const getUserDayDone=(year, month, day, uid)=>{
 };
 
 module.exports={
+    addUser,
+
     getTestById,
     getUserInfoById,
     getUserInfoByPhone,
