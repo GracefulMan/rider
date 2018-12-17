@@ -35,7 +35,8 @@ const loginTest = async(code) =>{
             method:"POST",
             url:"http://139.196.71.238:8081/user/common/login",
             headers:{
-                "content-type":"application/json"
+                "content-type":"application/json",
+                "X-Device-Id":"fdajflkdjkafj11d"
             },
             body:{
                 "loginType":"WECHAT_AUTH",
