@@ -124,6 +124,8 @@ const apireq = (url)=> new Promise((resolve, reject) => request.get(url, (err, r
         resolve(openid);
     }
 }));
+
+
 module.exports = {
     encodeString,
     decodeString,
