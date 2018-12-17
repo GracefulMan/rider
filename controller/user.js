@@ -47,7 +47,7 @@ const loginTest = async(code) =>{
             if (err) {
                 reject(err);
             } else {
-                let data = JSON.parse(body);
+                let data = body;
                 resolve(data);
             }
         })
