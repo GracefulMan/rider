@@ -97,7 +97,7 @@ const getUserDayDone = async ctx =>{
 
 module.exports.routers = {
     'GET /loginByWechat':loginByWechat,
-    'POST /loginByWechat2':loginByWechat2,
+    'GET /loginByWechat2':loginByWechat2,
 
 
     'GET /getTestInfo':getTestInfo,
