@@ -1,9 +1,9 @@
 'use strict';
 const connection=require('../index');
 
-const addUser=(userphone, nickname, wechat_avatar, openid)=>{
-    let _sql = `INSERT INTO user (userphone, nickname, wechat_avatar, openid, total_time, finish_times, unfinish_times)VALUES
-    (${userphone}, ${nickname}, ${wechat_avatar}, ${openid}, 0, 0, 0);`;
+const addUser=(phone, nickName, avatar, openId)=>{
+    let _sql = `INSERT INTO user (phone, nickName, avatar, openId, total_time, finish_times, unfinish_times)VALUES
+    (${phone}, ${nickName}, ${avatar}, ${openId}, 0, 0, 0);`;
     return connection.query(_sql);
 };
 

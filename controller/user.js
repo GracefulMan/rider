@@ -55,6 +55,17 @@ const loginTest = async(code) =>{
 };
 
 
+const addUser = async ctx =>{
+    let phone = ctx.request.body.phone;
+    let nickName = ctx.request.body.nickName;
+    let avatar = ctx.request.body.avatar;
+    let openId = ctx.request.body.openId;
+    let result = await UserModel.addUser(phone, nickName, avatar, openId);
+    ctx.body = result;
+    ctx.status = 200;
+};
+
+
 const getTestInfo = async ctx =>{
     let id  = ctx.query.id;
     let userInfo = await UserModel.getTestById(id);
@@ -96,8 +107,11 @@ const getUserDayDone = async ctx =>{
 
 
 module.exports.routers = {
-    'GET /loginGetOpenId':loginGetOpenId(),
+    'GET /loginGetOpenId':loginGetOpenId,
     'GET /loginByWechat2':loginByWechat2,
+
+    'POST /addUser':addUser,
+
 
 
     'GET /getTestInfo':getTestInfo,
