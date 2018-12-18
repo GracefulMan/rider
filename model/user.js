@@ -7,6 +7,11 @@ const addUser=(phone, nickName, avatar, openId)=>{
     return connection.query(_sql);
 };
 
+const getUserInfoByOpenId=(openId)=>{
+    let _sql = `SELECT * FROM user WHERE openId = ${openId};`;
+    return connection.query(_sql);
+}
+
 const getTestById=(id)=>{
     let _sql = `SELECT * FROM user_info WHERE id = ${id}`;
     return connection.query(_sql);
@@ -35,6 +40,7 @@ const getUserDayDone=(year, month, day, uid)=>{
 
 module.exports={
     addUser,
+    getUserInfoByOpenId,
 
     getTestById,
     getUserInfoById,

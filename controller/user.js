@@ -65,6 +65,13 @@ const addUser = async ctx =>{
     ctx.status = 200;
 };
 
+const getUserInfoByOpenId = async ctx =>{
+    let openId  = ctx.query.openId;
+    let userInfo = await UserModel.getUserInfoByOpenId(openId);
+    ctx.body = userInfo;
+    ctx.status = 200;
+};
+
 
 const getTestInfo = async ctx =>{
     let id  = ctx.query.id;
@@ -111,7 +118,7 @@ module.exports.routers = {
     'GET /loginByWechat2':loginByWechat2,
 
     'POST /addUser':addUser,
-
+    'GET /getUserInfoByOpenId':getUserInfoByOpenId,
 
 
     'GET /getTestInfo':getTestInfo,
