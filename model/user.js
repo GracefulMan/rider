@@ -3,7 +3,7 @@ const connection=require('../index');
 
 const addUser=(phone, nickName, avatar, openId)=>{
     let _sql = `INSERT INTO user (phone, nick_name, avatar, openId, total_time, finish_times, unfinish_times)VALUES
-    (${phone}, "${nickName}", ${avatar}, ${openId}, 0, 0, 0);`;
+    (${phone}, "${nickName}", "${avatar}", "${openId}", 0, 0, 0);`;
     return connection.query(_sql);
 };
 
