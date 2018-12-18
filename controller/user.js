@@ -65,11 +65,22 @@ const addUser = async ctx =>{
     ctx.status = 200;
 };
 
-const getUserInfoByOpenId = async ctx =>{
-    let openId  = ctx.query.openId;
+const getUserInfoByCode = async ctx =>{
+    let code = ctx.query.code;
+    let url ="https://api.weixin.qq.com/sns/jscode2session?appid="+config.appid+"&secret="+config.appsecret+"&js_code="+code+"&grant_type=authorization_code";
+    let openId = await commonFunction.apireq(url);
+    if (openId === undefined || openId.length !== 28) {
+        ctx.status = 410;
+        return;
+    }
     let userInfo = await UserModel.getUserInfoByOpenId(openId);
-    ctx.body = userInfo;
-    ctx.status = 200;
+    if (userInfo.length === 0) {
+        ctx.status = 411;
+        ctx.body = "用户未绑定微信";
+    } else {
+        ctx.body = userInfo;
+        ctx.status = 200;
+    }
 };
 
 
@@ -118,7 +129,7 @@ module.exports.routers = {
     'GET /loginByWechat2':loginByWechat2,
 
     'POST /addUser':addUser,
-    'GET /getUserInfoByOpenId':getUserInfoByOpenId,
+    'GET /getUserInfoByCode':getUserInfoByCode,
 
 
     'GET /getTestInfo':getTestInfo,
