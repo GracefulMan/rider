@@ -8,7 +8,7 @@ const addUser=(phone, nickName, avatar, openId)=>{
 };
 
 const getUserInfoByOpenId=(openId)=>{
-    let _sql = `SELECT * FROM user WHERE openId = ${openId};`;
+    let _sql = `SELECT * FROM user WHERE openId = "${openId}";`;
     return connection.query(_sql);
 }
 
