@@ -69,6 +69,7 @@ const getUserInfoByCode = async ctx =>{
     let code = ctx.query.code;
     let url ="https://api.weixin.qq.com/sns/jscode2session?appid="+config.appid+"&secret="+config.appsecret+"&js_code="+code+"&grant_type=authorization_code";
     let openId = await commonFunction.apireq(url);
+    console.log(openId);
     if (openId === undefined || openId.length !== 28) {
         ctx.status = 410;
         return;
