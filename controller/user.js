@@ -12,7 +12,7 @@ const checkUserPeriod = async(ctx)=>{
     let checkUser = await UserModel.getUserInfoByPhone(mobile);
     if (checkUser.length === 0) {
         ctx.body = "用户不存在或微信未绑定账号";
-        ctx.status = 8030;
+        ctx.status = 403;
     }
     let thisDate = new Date();
     let year = thisDate.getFullYear();
