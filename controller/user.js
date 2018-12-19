@@ -1,6 +1,7 @@
 "use strict";
 const jwt = require('../middleware/jwt');
 const UserModel =  require('../model/user');
+const PeriodModel =  require('../model/period');
 const commonFunction = require('../middleware/commonFunction');
 const config = require('../config');
 const request = require('request');
@@ -8,6 +9,11 @@ const request = require('request');
 // Todo 获取用户当前是否有排班
 const checkUserPeriod = async(ctx)=>{
     let mobile = ctx.query.mobile;
+    let checkUser = await UserModel.getUserInfoByPhone(mobile);
+    if (checkUser.length === 0) {
+        ctx.body = "用户不存在或微信未绑定账号";
+        ctx.status = 8030;
+    }
     let thisDate = new Date();
     let year = thisDate.getFullYear();
     let month = thisDate.getMonth() + 1;
@@ -20,8 +26,17 @@ const checkUserPeriod = async(ctx)=>{
     } else {
         checkTime = hour + ":30-" + hour + ":30";
     }
-    ctx.body = checkTime;
-    ctx.status = 200
+    let checkResult = await PeriodModel.checkPeriodByPhoneTime(mobile, year, month, date, checkTime);
+    let result = {};
+    if (checkResult.length === 0) {
+        result['status'] = 0;
+        result['msg'] = "骑手当前时间没有排班";
+    } else {
+        result['status'] = 1;
+        result['msg'] = "骑手当前时间有排班";
+    }
+    ctx.body = result;
+    ctx.status = 200;
 };
 
 const loginGetOpenId = async(ctx)=>{

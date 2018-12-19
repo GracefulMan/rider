@@ -1,7 +1,16 @@
 'use strict';
 const connection=require('../index');
+
+
+const checkPeriodByPhoneTime=(phone, year, month, day, time)=>{
+    let _sql = `SELECT * FROM rider_period WHERE userphone = "${phone}" && year = ${year} 
+    && month = ${month} && day = ${day} && time = "${time}" && (status = 1 || status = 2);`;
+    return connection.query(_sql);
+};
+
 const addPeriod=(uid, userphone, timeid, year, month, day, time, car)=>{
-    let _sql = `INSERT INTO rider_period (uid, userphone, timeid, year, month, day, time, car, status)VALUES(${uid}, ${userphone}, ${timeid}, ${year}, ${month}, ${day}, "${time}", ${car}, 1);`;
+    let _sql = `INSERT INTO rider_period (uid, userphone, timeid, year, month, day, time, car, status)VALUES
+    (${uid}, ${userphone}, ${timeid}, ${year}, ${month}, ${day}, "${time}", ${car}, 1);`;
     return connection.query(_sql);
 };
 
@@ -37,6 +46,8 @@ const updatePeriodUser=(id, uid, userphone)=>{
 };
 
 module.exports={
+    checkPeriodByPhoneTime,
+
     addPeriod,
     deletePeriod,
     getPeriod,
