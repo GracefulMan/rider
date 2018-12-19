@@ -24,7 +24,8 @@ const checkUserPeriod = async(ctx)=>{
     if (minute < 30) {
         checkTime = hour + ":00-" + hour + ":30";
     } else {
-        checkTime = hour + ":30-" + hour + ":30";
+        let nextHour = hour + 1;
+        checkTime = hour + ":30-" + nextHour + ":00";
     }
     let now = [year, month, date, hour, minute, checkTime];
     console.log(now);
