@@ -5,4 +5,4 @@ git pull
 echo "copy config file to current folder"
 cp ~/config.js ./
 chmod +x ./restart.sh
-pm2 start index.js
+nodemon
