@@ -10,8 +10,10 @@ const request = require('request');
 const checkUserPeriod = async(ctx)=>{
     let mobile = ctx.query.mobile;
     let checkUser = await UserModel.getUserInfoByPhone(mobile);
+    let result = {};
     if (checkUser.length === 0) {
-        ctx.body = "用户不存在或微信未绑定账号";
+        result['msg'] = "用户不存在或微信未绑定账号";
+        ctx.body = result;
         ctx.status = 401;
         return
     }
@@ -29,9 +31,7 @@ const checkUserPeriod = async(ctx)=>{
         checkTime = hour + ":30-" + nextHour + ":00";
     }
     let now = [year, month, date, hour, minute, checkTime];
-    console.log(now);
     let checkResult = await PeriodModel.checkPeriodByPhoneTime(mobile, year, month, date, checkTime);
-    let result = {};
     if (checkResult.length === 0) {
         result['status'] = 0;
         result['msg'] = "骑手当前时间没有排班";
