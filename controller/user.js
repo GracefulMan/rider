@@ -6,13 +6,13 @@ const commonFunction = require('../middleware/commonFunction');
 const config = require('../config');
 const request = require('request');
 
-// Todo 获取用户当前是否有排班
+// 获取用户当前是否有排班
 const checkUserPeriod = async(ctx)=>{
     let mobile = ctx.query.mobile;
     let checkUser = await UserModel.getUserInfoByPhone(mobile);
     if (checkUser.length === 0) {
         ctx.body = "用户不存在或微信未绑定账号";
-        ctx.status = 403;
+        ctx.status = 401;
         return
     }
     let thisDate = new Date();
