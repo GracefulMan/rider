@@ -13,6 +13,7 @@ const checkUserPeriod = async(ctx)=>{
     if (checkUser.length === 0) {
         ctx.body = "用户不存在或微信未绑定账号";
         ctx.status = 403;
+        return
     }
     let thisDate = new Date();
     let year = thisDate.getFullYear();
