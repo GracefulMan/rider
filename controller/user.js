@@ -5,6 +5,25 @@ const commonFunction = require('../middleware/commonFunction');
 const config = require('../config');
 const request = require('request');
 
+// Todo 获取用户当前是否有排班
+const checkUserPeriod = async(ctx)=>{
+    let mobile = ctx.query.mobile;
+    let thisDate = new Date();
+    let year = thisDate.getFullYear();
+    let month = thisDate.getMonth() + 1;
+    let date = thisDate.getDate();
+    let hour = thisDate.getHours(); //获取当前小时数(0-23)
+    let minute = thisDate.getMinutes(); //获取当前分钟数(0-59)
+    let checkTime = "";
+    if (minute < 30) {
+        checkTime = hour + ":00-" + hour + ":30";
+    } else {
+        checkTime = hour + ":30-" + hour + ":30";
+    }
+    ctx.body = checkTime;
+    ctx.status = 200
+};
+
 const loginGetOpenId = async(ctx)=>{
     let code = ctx.query.code;
     let url ="https://api.weixin.qq.com/sns/jscode2session?appid="+config.appid+"&secret="+config.appsecret+"&js_code="+code+"&grant_type=authorization_code";
@@ -126,6 +145,8 @@ const getUserDayDone = async ctx =>{
 
 
 module.exports.routers = {
+    'GET /checkUserPeriod': checkUserPeriod,
+
     'GET /loginGetOpenId':loginGetOpenId,
     'GET /loginByWechat2':loginByWechat2,
 
