@@ -22,7 +22,7 @@ const getUserInfoById=(id)=>{
     return connection.query(_sql);
 };
 const getUserInfoByPhone=(phone)=>{
-    let _sql = `SELECT * FROM user WHERE userphone = ${phone}`;
+    let _sql = `SELECT * FROM user WHERE userphone = "${phone}"`;
     return connection.query(_sql);
 };
 const getUserTodo=(uid)=>{
