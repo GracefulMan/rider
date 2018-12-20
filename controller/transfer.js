@@ -5,9 +5,7 @@ const UserModel = require('../model/user');
 
 const getMyTransfer = async ctx =>{
     let uidA  = ctx.request.body.uid;
-    let userphoneA = ctx.request.body.userphone;
-    let status = ctx.request.body.status;
-    let myTransfer = await TransferModel.getMyTransfer(uidA, status);
+    let myTransfer = await TransferModel.getMyTransfer(uidA);
     for (let i=0; i<myTransfer.length; i++) {
         let periods = myTransfer[i].periods.split(",");
         console.log(periods);
