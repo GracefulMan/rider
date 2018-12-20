@@ -98,9 +98,18 @@ const addUser = async ctx =>{
     let nickName = ctx.request.body.nickName;
     let avatar = ctx.request.body.avatar;
     let openId = ctx.request.body.openId;
-    let result = await UserModel.addUser(phone, nickName, avatar, openId);
-    ctx.body = result;
-    ctx.status = 200;
+    let result = {};
+    let checkUser = await UserModel.getUserInfoByPhone(phone);
+    if (checkUser.length === 0) {
+        let result = await UserModel.addUser(phone, nickName, avatar, openId);
+        result['msg'] = '用户绑定成功';
+        ctx.body = result;
+        ctx.status = 200;
+    } else {
+        result['msg'] = '绑定用户已存在，请勿重复提交';
+        ctx.body = result;
+        ctx.status = 403;
+    }
 };
 
 const getUserInfoByCode = async ctx =>{
