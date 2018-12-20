@@ -25,11 +25,28 @@ const deletePeriod = async ctx =>{
     ctx.body = result;
     ctx.status = 200;
 };
+// 用户待完成 只包含待完成
+const periodsTodoOnly = async ctx =>{
+    let id  = ctx.query.id;
+    ctx.body = await PeriodModel.getUserTodoOnly(id);
+    ctx.status = 200;
+};
+// 用户待完成 包含待完成和等待中
+const periodsTodoAll = async ctx =>{
+    let id  = ctx.query.id;
+    ctx.body = await PeriodModel.getUserTodoAll(id);
+    ctx.status = 200;
+};
+
+
 
 
 module.exports.routers = {
     'POST /addPeriod':addPeriod,
     'POST /deletePeriod':deletePeriod,
+
+    'GET /periods/todo/only': periodsTodoOnly,
+    'GET /periods/todo/all': periodsTodoAll,
 
 };
 module.exports.securedRouters = {

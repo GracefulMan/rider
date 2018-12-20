@@ -1,6 +1,8 @@
 "use strict";
 const TransferModel = require('../model/transfer');
 const PeriodModel = require('../model/period');
+const UserModel = require('../model/user');
+
 const getMyTransfer = async ctx =>{
     let uidA  = ctx.request.body.uid;
     let userphoneA = ctx.request.body.userphone;
@@ -21,11 +23,20 @@ const getMyTransfer = async ctx =>{
     ctx.status = 200;
 };
 const submitMyTransfer = async ctx =>{
-    let uidA  = ctx.request.body.uidA;
     let userphoneA = ctx.request.body.userphoneA;
-    let uidB  = ctx.request.body.uidB;
     let userphoneB = ctx.request.body.userphoneB;
     let periods = ctx.request.body.periods;
+    let userA = await UserModel.getUserInfoByPhone(userphoneA);
+    let userB = await UserModel.getUserInfoByPhone(userphoneB);
+    let result = {};
+    if (userB.length === 0) {
+        result['msg'] = '填入的骑手用户不存在或未绑定微信';
+        ctx.body = result;
+        ctx.status = 401;
+        return
+    }
+    let uidA = userA[0].id;
+    let uidB = userB[0].id;
     let periodsArray = periods.split(",");
     let uidBPeriods = [];  // 骑手B待完成相冲突的时段
     for (let i=0; i<periodsArray.length; i++) {
@@ -37,7 +48,6 @@ const submitMyTransfer = async ctx =>{
             uidBPeriods.push(uidBPeriod[0])
         }
     }
-    let result = {};
     if (uidBPeriods.length > 0) {  // 骑手B班次冲突
         result['return'] = uidBPeriods;
         result['msg'] = '骑手有冲突班次';

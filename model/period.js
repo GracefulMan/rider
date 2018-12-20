@@ -1,6 +1,14 @@
 'use strict';
 const connection=require('../index');
 
+const getUserTodoOnly=(uid)=>{
+    let _sql = `SELECT * FROM rider_period WHERE uid = ${uid} && status = 1;`;
+    return connection.query(_sql);
+};
+const getUserTodoAll=(uid)=>{
+    let _sql = `SELECT * FROM rider_period WHERE uid = ${uid} && (status = 1 || status = 3)`;
+    return connection.query(_sql);
+};
 
 const checkPeriodByPhoneTime=(phone, year, month, day, time)=>{
     let _sql = `SELECT * FROM rider_period WHERE userphone = "${phone}" && year = ${year} 
@@ -46,6 +54,9 @@ const updatePeriodUser=(id, uid, userphone)=>{
 };
 
 module.exports={
+    getUserTodoOnly,
+    getUserTodoAll,
+
     checkPeriodByPhoneTime,
 
     addPeriod,
