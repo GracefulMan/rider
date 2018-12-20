@@ -107,6 +107,7 @@ const getOthersTransfer = async ctx =>{
 };
 const acceptOthersTransfer = async ctx =>{
     let id  = ctx.request.body.id;
+    let car = ctx.request.body.car;
     let transfer = await  TransferModel.getTransferById(id);
     let periods = transfer[0].periods.split(",");
     let uidB = transfer[0].uidB;
@@ -132,7 +133,7 @@ const acceptOthersTransfer = async ctx =>{
             let period = await PeriodModel.getPeriod(periods[i]);
             if (period[0].status === 3) {
                 await PeriodModel.updatePeriodStatus(periods[i], 1);
-                await PeriodModel.updatePeriodUser(periods[i], uidB, userphoneB);
+                await PeriodModel.updatePeriodUser(periods[i], uidB, userphoneB, car);
             }
         }
         result['return'] = acceptOthersTransfer;

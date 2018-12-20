@@ -48,8 +48,8 @@ const updatePeriodStatus=(id, status)=>{
     return connection.query(_sql);
 };
 
-const updatePeriodUser=(id, uid, userphone)=>{
-    let _sql = `UPDATE rider_period SET uid = ${uid}, userphone = ${userphone} WHERE id = ${id};`;
+const updatePeriodUser=(id, uid, userphone, car)=>{
+    let _sql = `UPDATE rider_period SET uid = ${uid}, userphone = ${userphone}, car = ${car} WHERE id = ${id};`;
     return connection.query(_sql);
 };
 
