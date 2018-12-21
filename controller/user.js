@@ -6,6 +6,21 @@ const commonFunction = require('../middleware/commonFunction');
 const config = require('../config');
 const request = require('request');
 
+// Todo 获取token
+const authByWechat = async (ctx)=>{
+    let phone = ctx.request.body.phone;
+    let user = await UserModel.getUserInfoByPhone(phone);
+    if (user.length !== 0) {
+        ctx.status = 200;
+        ctx.body = {
+            token: jwt.issue({
+                uid: user[0].id,
+                phone: phone
+            })
+        }
+    }
+};
+
 // 获取用户当前是否有排班
 const checkUserPeriod = async(ctx)=>{
     let mobile = ctx.query.mobile;
@@ -174,6 +189,8 @@ const getUserDayDone = async ctx =>{
 
 module.exports.routers = {
     'GET /check/user/period': checkUserPeriod,
+
+    'POST /authByWechat': authByWechat,
 
     'GET /loginGetOpenId':loginGetOpenId,
     'GET /loginByWechat2':loginByWechat2,
