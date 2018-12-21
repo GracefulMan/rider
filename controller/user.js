@@ -24,11 +24,8 @@ const authByWechat = async (ctx)=>{
 // Todo token解析
 const getToken = async (ctx)=>{
     let token = jwt.getToken(ctx);
-    console.log(token);
-    let openid = token.openid;
-    console.log(openid);
     ctx.status = 200;
-    ctx.body = openid;
+    ctx.body = token;
 };
 
 // 获取用户当前是否有排班
