@@ -21,6 +21,14 @@ const authByWechat = async (ctx)=>{
     }
 };
 
+// Todo token解析
+const getToken = async (ctx)=>{
+    let token = jwt.getToken(ctx);
+    let openid = token.openid;
+    ctx.status = 200;
+    ctx.body = openid;
+};
+
 // 获取用户当前是否有排班
 const checkUserPeriod = async(ctx)=>{
     let mobile = ctx.query.mobile;
@@ -207,5 +215,5 @@ module.exports.routers = {
 
 };
 module.exports.securedRouters = {
-
+    'GET /getToken': getToken,
 };
