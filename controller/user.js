@@ -145,7 +145,7 @@ const getUserInfoByCode = async ctx =>{
     }
     let userInfo = await UserModel.getUserInfoByOpenId(openId);
     if (userInfo.length === 0) {
-        ctx.status = 411;
+        ctx.status = 401;
         ctx.body = "用户未绑定微信";
     } else {
         let token = jwt.issue({uid: userInfo[0].id, openId: openId});
@@ -159,16 +159,32 @@ const getUserInfoByCode = async ctx =>{
     }
 };
 
+// 获取用户信息
+const getUserInfo = async ctx =>{
+    let token = jwt.getToken(ctx);
+    let uid = token.uid;
+    if (openId === undefined || openId.length !== 28) {
+        ctx.status = 410;
+        return;
+    }
+    let userInfo = await UserModel.getUserInfoById(uid);
+    if (userInfo.length === 0) {
+        ctx.status = 401;
+        ctx.body = "未获取到用户信息";
+    } else {
+        let result = {};
+        result['phone'] = userInfo[0].phone;
+        result['total_time'] = userInfo[0].total_time;
+        result['unfinish_times'] = userInfo[0].unfinish_times;
+        ctx.body = result;
+        ctx.status = 200;
+    }
+};
+
 
 const getTestInfo = async ctx =>{
     let id  = ctx.query.id;
     let userInfo = await UserModel.getTestById(id);
-    ctx.body = userInfo;
-    ctx.status = 200;
-};
-const getUserInfo = async ctx =>{
-    let id  = ctx.query.id;
-    let userInfo = await UserModel.getUserInfoById(id);
     ctx.body = userInfo;
     ctx.status = 200;
 };
