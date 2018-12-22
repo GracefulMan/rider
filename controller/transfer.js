@@ -163,13 +163,13 @@ const rejectOthersTransfer = async ctx =>{
 
 
 module.exports.routers = {
-    'POST /cancelMyTransfer':cancelMyTransfer,
-    'POST /acceptOthersTransfer':acceptOthersTransfer,
-    'POST /rejectOthersTransfer':rejectOthersTransfer,
+    'POST /transfer/cancel':cancelMyTransfer,
+    'POST /transfer/accept':acceptOthersTransfer,
+    'POST /transfer/reject':rejectOthersTransfer,
 
 };
 module.exports.securedRouters = {
-    'POST /getMyTransfer':getMyTransfer,
-    'POST /submitMyTransfer':submitMyTransfer,
-    'POST /getOthersTransfer':getOthersTransfer,
+    'POST /transfer/user':getMyTransfer,
+    'POST /transfer/submit':submitMyTransfer,
+    'POST /transfer/others':getOthersTransfer,
 };
