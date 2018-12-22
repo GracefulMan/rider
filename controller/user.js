@@ -224,7 +224,6 @@ module.exports.routers = {
     'GET /loginByWechat2':loginByWechat2,
 
     'POST /addUser':addUser,
-    'GET /getUserInfoByCode':getUserInfoByCode,
 
 
     'GET /getTestInfo':getTestInfo,
