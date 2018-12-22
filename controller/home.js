@@ -5,7 +5,8 @@ const PeriodModel = require('../model/period');
 const getMonthInfo = async ctx =>{
     let year = ctx.request.body.year;
     let month = ctx.request.body.month;
-    let uid = ctx.request.body.uid;
+    let token = jwt.getToken(ctx);
+    let uid = token.uid;
     let monthInfoTodo = await ScheduleModel.getMonthInfoTodo(year, month);
     let monthInfoAll = await ScheduleModel.getMonthInfoAll(year, month);
     let monthInfo = [];
@@ -38,10 +39,11 @@ const getMonthInfo = async ctx =>{
     ctx.status = 200;
 };
 const getDayTodo = async ctx =>{
+    let token = jwt.getToken(ctx);
+    let uid = token.uid;
     let year = ctx.request.body.year;
     let month = ctx.request.body.month;
     let day = ctx.request.body.day;
-    let uid = ctx.request.body.uid;
     let dayTodo = await ScheduleModel.getDayTodo(year, month, day);
     let userDayTodo = await PeriodModel.getUserDayTodo(year, month, day, uid);
     for (let i=0; i<userDayTodo.length; i++) {
@@ -59,10 +61,10 @@ const getDayTodo = async ctx =>{
 
 
 module.exports.routers = {
-    'POST /getMonthInfo':getMonthInfo,
-    'POST /getDayTodo':getDayTodo,
+
 
 };
 module.exports.securedRouters = {
-
+    'POST /getMonthInfo':getMonthInfo,
+    'POST /getDayTodo':getDayTodo,
 };
