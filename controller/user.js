@@ -233,5 +233,5 @@ module.exports.routers = {
 };
 module.exports.securedRouters = {
     'GET /getToken': getToken,
-    'GET /user/info':getUserInfo,
+    'GET /user/info': getUserInfo,
 };
