@@ -32,10 +32,10 @@ const addPeriod = async ctx =>{
 const deletePeriod = async ctx =>{
     let id  = ctx.request.body.id;
     await PeriodModel.deletePeriod(id);  // 删除班次
-    let schedule = await ScheduleModel.getScheduleById(timeid);
+    let schedule = await ScheduleModel.getScheduleById(id);
     let num = schedule[0].num_signed - 1;
-    await ScheduleModel.changeScheduleNumSigned(timeid, num);  // 班次报名人数-1
-    await scheduleCheckNum(timeid);  // 检查班次
+    await ScheduleModel.changeScheduleNumSigned(id, num);  // 班次报名人数-1
+    await scheduleCheckNum(id);  // 检查班次
     ctx.body = '取消成功';
     ctx.status = 200;
 };
