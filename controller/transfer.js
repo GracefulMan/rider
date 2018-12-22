@@ -32,7 +32,7 @@ const submitMyTransfer = async ctx =>{
     if (userB.length === 0) {
         result['msg'] = '填入的骑手用户不存在或未绑定微信';
         ctx.body = result;
-        ctx.status = 401;
+        ctx.status = 406;
         return
     }
     let userA = await UserModel.getUserInfoById(uidA);
