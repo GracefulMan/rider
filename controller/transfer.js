@@ -169,7 +169,7 @@ module.exports.routers = {
 
 };
 module.exports.securedRouters = {
-    'POST /transfer/user':getMyTransfer,
+    'GET /transfer/user':getMyTransfer,
     'POST /transfer/submit':submitMyTransfer,
     'POST /transfer/others':getOthersTransfer,
 };

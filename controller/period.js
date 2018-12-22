@@ -2,12 +2,12 @@
 const jwt = require('../middleware/jwt');
 const ScheduleModel = require('../model/schedule');
 const PeriodModel = require('../model/period');
+const UserModel = require('../model/user');
 
 // 添加班次
 const periodAdd = async ctx =>{
     let token = jwt.getToken(ctx);
     let uid = token.uid;
-    let userphone = ctx.request.body.userphone;
     let timeid = ctx.request.body.timeid;
     let year = ctx.request.body.year;
     let month = ctx.request.body.month;
@@ -21,6 +21,8 @@ const periodAdd = async ctx =>{
         num += 1 ;
         await ScheduleModel.changeScheduleNumSigned(timeid, num);  // 班次报名人数+1
         await scheduleCheckNum(timeid);  // 检查班次
+        let userinfo = await UserModel.getUserInfoById(uid);
+        let userphone = userinfo[0].phone;
         await PeriodModel.addPeriod(uid, userphone, timeid, year, month, day, time, car);
         ctx.body = '添加成功';
         ctx.status = 200;
