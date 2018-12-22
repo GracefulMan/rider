@@ -153,7 +153,7 @@ const getUserInfoByCode = async ctx =>{
         result['token'] = token;
         result['phone'] = userInfo[0].phone;
         result['total_time'] = userInfo[0].total_time;
-        result['unfinish_times'] = userInfo[0].unfinish_time;
+        result['unfinish_times'] = userInfo[0].unfinish_times;
         ctx.body = result;
         ctx.status = 200;
     }
