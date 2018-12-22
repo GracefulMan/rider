@@ -114,7 +114,7 @@ const loginTest = async(code) =>{
     })
 };
 
-
+// 添加用户
 const addUser = async ctx =>{
     let phone = ctx.request.body.phone;
     let nickName = ctx.request.body.nickName;
@@ -134,11 +134,11 @@ const addUser = async ctx =>{
     }
 };
 
+// 用户微信登录
 const getUserInfoByCode = async ctx =>{
     let code = ctx.query.code;
     let url ="https://api.weixin.qq.com/sns/jscode2session?appid="+config.appid+"&secret="+config.appsecret+"&js_code="+code+"&grant_type=authorization_code";
     let openId = await commonFunction.apireq(url);
-    console.log(openId);
     if (openId === undefined || openId.length !== 28) {
         ctx.status = 410;
         return;
@@ -148,7 +148,12 @@ const getUserInfoByCode = async ctx =>{
         ctx.status = 411;
         ctx.body = "用户未绑定微信";
     } else {
-        ctx.body = userInfo;
+        let token = jwt.issue({uid: userInfo[0].id, openId: openId});
+        let result = {};
+        result['token'] = token;
+        result['total_time'] = userInfo[0].total_time;
+        result['unfinish_time'] = userInfo[0].unfinish_time;
+        ctx.body = result;
         ctx.status = 200;
     }
 };
