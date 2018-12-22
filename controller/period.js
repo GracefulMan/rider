@@ -31,9 +31,9 @@ const addPeriod = async ctx =>{
 // 取消班次
 const deletePeriod = async ctx =>{
     let id  = ctx.request.body.id;
-    await PeriodModel.deletePeriod(id);  // 删除班次
     let period = await PeriodModel.getPeriod(id);
     let timeid = period[0].timeid;
+    await PeriodModel.deletePeriod(id);  // 删除班次
     let schedule = await ScheduleModel.getScheduleById(timeid);
     let num = schedule[0].num_signed - 1;
     await ScheduleModel.changeScheduleNumSigned(timeid, num);  // 班次报名人数-1
