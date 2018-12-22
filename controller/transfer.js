@@ -1,10 +1,12 @@
 "use strict";
+const jwt = require('../middleware/jwt');
 const TransferModel = require('../model/transfer');
 const PeriodModel = require('../model/period');
 const UserModel = require('../model/user');
 
 const getMyTransfer = async ctx =>{
-    let uidA  = ctx.request.body.uid;
+    let token = jwt.getToken(ctx);
+    let uidA = token.uid;
     let myTransfer = await TransferModel.getMyTransfer(uidA);
     for (let i=0; i<myTransfer.length; i++) {
         let periods = myTransfer[i].periods.split(",");
@@ -21,10 +23,10 @@ const getMyTransfer = async ctx =>{
     ctx.status = 200;
 };
 const submitMyTransfer = async ctx =>{
-    let userphoneA = ctx.request.body.userphoneA;
+    let token = jwt.getToken(ctx);
+    let uidA = token.uid;
     let userphoneB = ctx.request.body.userphoneB;
     let periods = ctx.request.body.periods;
-    let userA = await UserModel.getUserInfoByPhone(userphoneA);
     let userB = await UserModel.getUserInfoByPhone(userphoneB);
     let result = {};
     if (userB.length === 0) {
@@ -33,7 +35,8 @@ const submitMyTransfer = async ctx =>{
         ctx.status = 401;
         return
     }
-    let uidA = userA[0].id;
+    let userA = await UserModel.getUserInfoById(uidA);
+    let userphoneA = userA[0].phone;
     let uidB = userB[0].id;
     let periodsArray = periods.split(",");
     let uidBPeriods = [];  // 骑手B待完成相冲突的时段
@@ -84,8 +87,8 @@ const cancelMyTransfer = async ctx =>{
     ctx.status = 200;
 };
 const getOthersTransfer = async ctx =>{
-    let uidB  = ctx.request.body.uid;
-    let userphoneB = ctx.request.body.userphone;
+    let token = jwt.getToken(ctx);
+    let uidB = token.uid;
     let status = ctx.request.body.status;
     let othersTransfer = await TransferModel.getOthersTransfer(uidB, status);
     for (let i=0; i<othersTransfer.length; i++) {
@@ -160,14 +163,13 @@ const rejectOthersTransfer = async ctx =>{
 
 
 module.exports.routers = {
-    'POST /getMyTransfer':getMyTransfer,
-    'POST /submitMyTransfer':submitMyTransfer,
     'POST /cancelMyTransfer':cancelMyTransfer,
-    'POST /getOthersTransfer':getOthersTransfer,
     'POST /acceptOthersTransfer':acceptOthersTransfer,
     'POST /rejectOthersTransfer':rejectOthersTransfer,
 
 };
 module.exports.securedRouters = {
-
+    'POST /getMyTransfer':getMyTransfer,
+    'POST /submitMyTransfer':submitMyTransfer,
+    'POST /getOthersTransfer':getOthersTransfer,
 };

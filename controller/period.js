@@ -1,10 +1,12 @@
 "use strict";
+const jwt = require('../middleware/jwt');
 const ScheduleModel = require('../model/schedule');
 const PeriodModel = require('../model/period');
 
 // 添加班次
 const periodAdd = async ctx =>{
-    let uid  = ctx.request.body.uid;
+    let token = jwt.getToken(ctx);
+    let uid = token.uid;
     let userphone = ctx.request.body.userphone;
     let timeid = ctx.request.body.timeid;
     let year = ctx.request.body.year;
@@ -44,14 +46,16 @@ const periodDelete = async ctx =>{
 
 // 用户待完成 只包含待完成
 const periodTodoOnly = async ctx =>{
-    let id  = ctx.query.id;
-    ctx.body = await PeriodModel.getUserTodoOnly(id);
+    let token = jwt.getToken(ctx);
+    let uid = token.uid;
+    ctx.body = await PeriodModel.getUserTodoOnly(uid);
     ctx.status = 200;
 };
 // 用户待完成 包含待完成和等待中
 const periodTodoAll = async ctx =>{
-    let id  = ctx.query.id;
-    ctx.body = await PeriodModel.getUserTodoAll(id);
+    let token = jwt.getToken(ctx);
+    let uid = token.uid;
+    ctx.body = await PeriodModel.getUserTodoAll(uid);
     ctx.status = 200;
 };
 
@@ -74,13 +78,12 @@ const scheduleCheckNum = async (id)=>{
 
 
 module.exports.routers = {
-    'POST /period/add':periodAdd,
     'POST /period/delete':periodDelete,
-
-    'GET /period/todo/only': periodTodoOnly,
-    'GET /period/todo/all': periodTodoAll,
 
 };
 module.exports.securedRouters = {
+    'GET /period/todo/only': periodTodoOnly,
+    'GET /period/todo/all': periodTodoAll,
 
+    'POST /period/add':periodAdd,
 };

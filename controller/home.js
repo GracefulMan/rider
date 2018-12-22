@@ -66,6 +66,6 @@ module.exports.routers = {
 
 };
 module.exports.securedRouters = {
-    'POST /getMonthInfo':getMonthInfo,
-    'POST /getDayTodo':getDayTodo,
+    'POST /home/month':getMonthInfo,
+    'POST /home/day':getDayTodo,
 };
