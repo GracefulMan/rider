@@ -7,6 +7,22 @@ const getScheduleById=(id)=>{
     return connection.query(_sql);
 };
 
+const getMonthInfoTodo=(year, month)=>{
+    let _sql = `SELECT DISTINCT year, month, day FROM time_schedule WHERE 
+    year = ${year} && month = ${month} && status = 1`;
+    return connection.query(_sql);
+};
+const getMonthInfoAll=(year, month)=>{
+    let _sql = `SELECT DISTINCT year, month, day FROM time_schedule WHERE 
+    year = ${year} && month = ${month} && (status = 1 || status = 2)`;
+    return connection.query(_sql);
+};
+const getDayTodo=(year, month, day)=>{
+    let _sql = `SELECT * FROM time_schedule WHERE year = ${year} && month = ${month} 
+    && day = ${day} && status = 1`;
+    return connection.query(_sql);
+};
+
 // UPDATE
 const changeScheduleNumSigned=(id, num)=>{
     let _sql = `UPDATE time_schedule SET num_signed = ${num} WHERE id = ${id};`;
@@ -33,6 +49,9 @@ const deleteSchedule=(id)=>{
 
 module.exports={
     getScheduleById,
+    getMonthInfoTodo,
+    getMonthInfoAll,
+    getDayTodo,
 
     changeScheduleNumSigned,
     changeScheduleStatus,

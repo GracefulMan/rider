@@ -112,7 +112,7 @@ const acceptOthersTransfer = async ctx =>{
     let userphoneB = transfer[0].userphoneB;
     let uidBPeriods = [];  // 骑手B待完成相冲突的时段
     for (let i=0; i< periods.length; i++) {
-        let period = await PeriodModel.getTimeidById(periods[i]);
+        let period = await PeriodModel.getPeriod(periods[i]);
         let timeid = period[0].timeid;
         let uidBPeriod = await PeriodModel.getPeriodByUidTimeid(uidB, timeid);
         if (uidBPeriod.length > 0) {

@@ -3,7 +3,7 @@ const ScheduleModel = require('../model/schedule');
 const PeriodModel = require('../model/period');
 
 // 添加班次
-const addPeriod = async ctx =>{
+const periodAdd = async ctx =>{
     let uid  = ctx.request.body.uid;
     let userphone = ctx.request.body.userphone;
     let timeid = ctx.request.body.timeid;
@@ -29,7 +29,7 @@ const addPeriod = async ctx =>{
 };
 
 // 取消班次
-const deletePeriod = async ctx =>{
+const periodDelete = async ctx =>{
     let id  = ctx.request.body.id;
     let period = await PeriodModel.getPeriod(id);
     let timeid = period[0].timeid;
@@ -43,20 +43,20 @@ const deletePeriod = async ctx =>{
 };
 
 // 用户待完成 只包含待完成
-const periodsTodoOnly = async ctx =>{
+const periodTodoOnly = async ctx =>{
     let id  = ctx.query.id;
     ctx.body = await PeriodModel.getUserTodoOnly(id);
     ctx.status = 200;
 };
 // 用户待完成 包含待完成和等待中
-const periodsTodoAll = async ctx =>{
+const periodTodoAll = async ctx =>{
     let id  = ctx.query.id;
     ctx.body = await PeriodModel.getUserTodoAll(id);
     ctx.status = 200;
 };
 
 
-// Todo 检测班次，返回状态 1 空余 2 已满 3 过期
+// 检测班次，返回状态 1 空余 2 已满 3 过期
 const scheduleCheckNum = async (id)=>{
     let schedule = await ScheduleModel.getScheduleById(id);
     if (schedule[0].num_signed >= schedule[0].num_needed && schedule[0].status === 1) {
@@ -74,11 +74,11 @@ const scheduleCheckNum = async (id)=>{
 
 
 module.exports.routers = {
-    'POST /addPeriod':addPeriod,
-    'POST /deletePeriod':deletePeriod,
+    'POST /period/add':periodAdd,
+    'POST /period/delete':periodDelete,
 
-    'GET /periods/todo/only': periodsTodoOnly,
-    'GET /periods/todo/all': periodsTodoAll,
+    'GET /period/todo/only': periodTodoOnly,
+    'GET /period/todo/all': periodTodoAll,
 
 };
 module.exports.securedRouters = {

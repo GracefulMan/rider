@@ -168,7 +168,7 @@ const getUserInfo = async ctx =>{
 };
 const getUserTodo = async ctx =>{
     let id  = ctx.query.id;
-    let periodsTodo = await UserModel.getUserTodo(id);
+    let periodsTodo = await PeriodModel.getUserTodoAll(id);
     ctx.body = periodsTodo;
     ctx.status = 200;
 };
@@ -176,7 +176,7 @@ const getUserMonthDone = async ctx =>{
     let year = ctx.request.body.year;
     let month = ctx.request.body.month;
     let uid = ctx.request.body.uid;
-    let userMonthDone = await UserModel.getUserMonthDone(year, month, uid);
+    let userMonthDone = await PeriodModel.getUserMonthDone(year, month, uid);
     for (let i=0; i<userMonthDone.length; i++) {
         userMonthDone[i]['status'] = 3;
     }
@@ -188,7 +188,7 @@ const getUserDayDone = async ctx =>{
     let month = ctx.request.body.month;
     let day = ctx.request.body.day;
     let uid = ctx.request.body.uid;
-    let userDayDone = await UserModel.getUserDayDone(year, month, day, uid);
+    let userDayDone = await PeriodModel.getUserDayDone(year, month, day, uid);
     ctx.body = userDayDone;
     ctx.status = 200;
 };
