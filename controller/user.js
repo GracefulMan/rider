@@ -135,7 +135,7 @@ const addUser = async ctx =>{
 };
 
 // 用户微信登录
-const getUserInfoByCode = async ctx =>{
+const userLoginByWechat = async ctx =>{
     let code = ctx.query.code;
     let url ="https://api.weixin.qq.com/sns/jscode2session?appid="+config.appid+"&secret="+config.appsecret+"&js_code="+code+"&grant_type=authorization_code";
     let openId = await commonFunction.apireq(url);
@@ -149,12 +149,7 @@ const getUserInfoByCode = async ctx =>{
         ctx.body = "用户未绑定微信";
     } else {
         let token = jwt.issue({uid: userInfo[0].id, openId: openId});
-        let result = {};
-        result['token'] = token;
-        result['phone'] = userInfo[0].phone;
-        result['total_time'] = userInfo[0].total_time;
-        result['unfinish_times'] = userInfo[0].unfinish_times;
-        ctx.body = result;
+        ctx.body = token;
         ctx.status = 200;
     }
 };
@@ -219,6 +214,10 @@ const getUserDayDone = async ctx =>{
 module.exports.routers = {
     'GET /check/user/period': checkUserPeriod,
 
+    'GET /user/info':getUserInfo,
+    'GET /user/login/wechat':userLoginByWechat,
+
+
     'POST /authByWechat': authByWechat,
 
     'GET /loginGetOpenId':loginGetOpenId,
@@ -229,7 +228,6 @@ module.exports.routers = {
 
 
     'GET /getTestInfo':getTestInfo,
-    'GET /getUserInfo':getUserInfo,
     'GET /getUserTodo':getUserTodo,
     'POST /getUserMonthDone':getUserMonthDone,
     'POST /getUserDayDone':getUserDayDone,
