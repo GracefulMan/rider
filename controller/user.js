@@ -6,6 +6,15 @@ const commonFunction = require('../middleware/commonFunction');
 const config = require('../config');
 const request = require('request');
 
+
+// 测试专用
+const getTestInfo = async ctx =>{
+    let id  = ctx.query.id;
+    let userInfo = await UserModel.getTestById(id);
+    ctx.body = userInfo;
+    ctx.status = 200;
+};
+
 // Todo 获取token
 const authByWechat = async (ctx)=>{
     let phone = ctx.request.body.phone;
@@ -159,14 +168,9 @@ const getUserInfo = async ctx =>{
     let token = jwt.getToken(ctx);
     console.log(token);
     let uid = token.uid;
-    let openId = token.openId;
-    if (openId === undefined || openId.length !== 28) {
-        ctx.status = 410;
-        return;
-    }
     let userInfo = await UserModel.getUserInfoById(uid);
     if (userInfo.length === 0) {
-        ctx.status = 401;
+        ctx.status = 410;
         ctx.body = "未获取到用户信息";
     } else {
         let result = {};
@@ -177,24 +181,20 @@ const getUserInfo = async ctx =>{
         ctx.status = 200;
     }
 };
-
-
-const getTestInfo = async ctx =>{
-    let id  = ctx.query.id;
-    let userInfo = await UserModel.getTestById(id);
-    ctx.body = userInfo;
-    ctx.status = 200;
-};
+// 获取用户待完成
 const getUserTodo = async ctx =>{
-    let id  = ctx.query.id;
-    let periodsTodo = await PeriodModel.getUserTodoAll(id);
+    let token = jwt.getToken(ctx);
+    let uid = token.uid;
+    let periodsTodo = await PeriodModel.getUserTodoAll(uid);
     ctx.body = periodsTodo;
     ctx.status = 200;
 };
+// 获取用户月份已完成
 const getUserMonthDone = async ctx =>{
     let year = ctx.request.body.year;
     let month = ctx.request.body.month;
-    let uid = ctx.request.body.uid;
+    let token = jwt.getToken(ctx);
+    let uid = token.uid;
     let userMonthDone = await PeriodModel.getUserMonthDone(year, month, uid);
     for (let i=0; i<userMonthDone.length; i++) {
         userMonthDone[i]['status'] = 3;
@@ -202,11 +202,13 @@ const getUserMonthDone = async ctx =>{
     ctx.body = userMonthDone;
     ctx.status = 200;
 };
+// 获取用户日已完成
 const getUserDayDone = async ctx =>{
     let year = ctx.request.body.year;
     let month = ctx.request.body.month;
     let day = ctx.request.body.day;
-    let uid = ctx.request.body.uid;
+    let token = jwt.getToken(ctx);
+    let uid = token.uid;
     let userDayDone = await PeriodModel.getUserDayDone(year, month, day, uid);
     ctx.body = userDayDone;
     ctx.status = 200;
@@ -215,25 +217,21 @@ const getUserDayDone = async ctx =>{
 
 module.exports.routers = {
     'GET /check/user/period': checkUserPeriod,
-
     'GET /user/login/wechat':userLoginByWechat,
-
-
     'POST /authByWechat': authByWechat,
-
     'GET /loginGetOpenId':loginGetOpenId,
     'GET /loginByWechat2':loginByWechat2,
 
     'POST /addUser':addUser,
 
-
     'GET /getTestInfo':getTestInfo,
-    'GET /getUserTodo':getUserTodo,
-    'POST /getUserMonthDone':getUserMonthDone,
-    'POST /getUserDayDone':getUserDayDone,
+
 
 };
 module.exports.securedRouters = {
     'GET /getToken': getToken,
     'GET /user/info': getUserInfo,
+    'GET /getUserTodo':getUserTodo,
+    'POST /getUserMonthDone':getUserMonthDone,
+    'POST /getUserDayDone':getUserDayDone,
 };
