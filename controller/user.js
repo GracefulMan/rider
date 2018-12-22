@@ -151,6 +151,7 @@ const getUserInfoByCode = async ctx =>{
         let token = jwt.issue({uid: userInfo[0].id, openId: openId});
         let result = {};
         result['token'] = token;
+        result['phone'] = userInfo[0].phone;
         result['total_time'] = userInfo[0].total_time;
         result['unfinish_time'] = userInfo[0].unfinish_time;
         ctx.body = result;
