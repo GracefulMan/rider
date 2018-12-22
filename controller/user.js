@@ -214,7 +214,6 @@ const getUserDayDone = async ctx =>{
 module.exports.routers = {
     'GET /check/user/period': checkUserPeriod,
 
-    'GET /user/info':getUserInfo,
     'GET /user/login/wechat':userLoginByWechat,
 
 
@@ -234,4 +233,5 @@ module.exports.routers = {
 };
 module.exports.securedRouters = {
     'GET /getToken': getToken,
+    'GET /user/info':getUserInfo,
 };
