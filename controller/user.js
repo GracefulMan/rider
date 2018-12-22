@@ -231,7 +231,7 @@ module.exports.routers = {
 module.exports.securedRouters = {
     'GET /getToken': getToken,
     'GET /user/info': getUserInfo,
-    'GET /getUserTodo':getUserTodo,
-    'POST /getUserMonthDone':getUserMonthDone,
-    'POST /getUserDayDone':getUserDayDone,
+    'GET /user/todo':getUserTodo,
+    'POST /user/done/month':getUserMonthDone,
+    'POST /user/done/day':getUserDayDone,
 };
