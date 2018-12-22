@@ -157,7 +157,9 @@ const userLoginByWechat = async ctx =>{
 // 获取用户信息
 const getUserInfo = async ctx =>{
     let token = jwt.getToken(ctx);
+    console.log(token);
     let uid = token.uid;
+    let openId = token.openId;
     if (openId === undefined || openId.length !== 28) {
         ctx.status = 410;
         return;
