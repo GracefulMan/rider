@@ -1,4 +1,5 @@
 "use strict";
+const jwt = require('../middleware/jwt');
 const ScheduleModel = require('../model/schedule');
 const PeriodModel = require('../model/period');
 
