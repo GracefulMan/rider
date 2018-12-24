@@ -79,9 +79,11 @@ exports.query = (sql,values)=>{
                 connection.query(sql,values,(err,rows)=>{
                     if(err) reject(err);
                     else {
+                        console.log('成功了连接！！！');
                         resolve(rows);
                     }
                     connection.release();
+                    console.log('成功释放！！！');
                 })
             }
         })
