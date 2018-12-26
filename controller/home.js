@@ -67,11 +67,20 @@ const testInfo = async ctx =>{
     result['status'] = 'run';
     ctx.body = result;
     ctx.status = 200;
-}
+};
+
+const testInsert = async ctx =>{
+    let result = {};
+    result['sql'] = await TestModel.test2('2018-12-25 18:00', '2018-12-25 18:30', 10);
+    result['status'] = 'run';
+    ctx.body = result;
+    ctx.status = 200;
+};
 
 
 module.exports.routers = {
     'GET /test/info': testInfo,
+    'GET /test/insert': testInsert,
 
 };
 module.exports.securedRouters = {

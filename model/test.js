@@ -35,9 +35,9 @@ const changeScheduleStatus=(id, status)=>{
 };
 
 // INSERT
-const addSchedule=(year, month, day, time, num_needed)=>{
-    let _sql = `INSERT INTO time_schedule (year, month, day, time, num_needed, num_signed, status)VALUES
-    (${year}, ${month}, ${day}, "${time}", ${num_needed}, 0, 1);`;
+const test2=(startTime, endTime, numNeeded)=>{
+    let _sql = `INSERT INTO public.user (start_time, end_time, num_needed, num_signed, status)VALUES
+    (${startTime}, ${endTime}, ${numNeeded}, "${numNeeded}", ${numSigned}, 0, 1);`;
     return connection.query(_sql);
 };
 
@@ -49,6 +49,7 @@ const deleteSchedule=(id)=>{
 
 module.exports={
     test1,
+    test2,
 
     getMonthInfoTodo,
     getMonthInfoAll,
