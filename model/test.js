@@ -38,7 +38,7 @@ const changeScheduleStatus=(id, status)=>{
 const test2=(startTime, endTime, numNeeded)=>{
     let _sql = `INSERT INTO public.schedule (start_time, end_time, num_needed, num_signed, status)VALUES
     ("${startTime}", "${endTime}", ${numNeeded}, 0, 1);`;
-    return connection.query(_sql);
+    return connection.pgSQL(_sql);
 };
 
 // DELETE
