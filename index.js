@@ -116,4 +116,4 @@ exports.pgSQL = async ()=>{
     }
 };
 
-query().catch(e => console.error(e.message, e.stack));
+//query().catch(e => console.error(e.message, e.stack));
