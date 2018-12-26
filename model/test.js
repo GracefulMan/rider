@@ -3,7 +3,7 @@ const connection=require('../index');
 
 // SELECT
 const test1=(id)=>{
-    let _sql = `SELECT * FROM public.schedule WHERE id = ${id};`;
+    let _sql = `SELECT * FROM public.schedule WHERE id = ${id} OR id = 3;`;
     return connection.pgSQL(_sql);
 };
 
