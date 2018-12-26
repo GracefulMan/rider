@@ -78,9 +78,20 @@ const testInsert = async ctx =>{
 };
 
 
+const testDelete = async ctx =>{
+    let result = {};
+    result['sql'] = await TestModel.test3(3);
+    result['status'] = 'run';
+    ctx.body = result;
+    ctx.status = 200;
+};
+
+
 module.exports.routers = {
     'GET /test/info': testInfo,
     'GET /test/insert': testInsert,
+    'GET /test/delete': testDelete,
+
 
 };
 module.exports.securedRouters = {

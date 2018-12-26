@@ -42,13 +42,14 @@ const test2=(startTime, endTime, numNeeded)=>{
 };
 
 // DELETE
-const deleteSchedule=(id)=>{
-    let _sql = `DELETE FROM time_schedule WHERE id = ${id};`;
-    return connection.query(_sql);
+const test3=(id)=>{
+    let _sql = `DELETE FROM public.schedule WHERE id = ${id};`;
+    return connection.pgSQL(_sql);
 };
 
 module.exports={
     test1,
     test2,
+    test3,
 
 };
