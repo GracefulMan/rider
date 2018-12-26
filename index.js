@@ -110,7 +110,8 @@ exports.pgSQL = async ()=>{
     try {
         let res = await connect.query('SELECT * FROM public.user');
         console.log(res.rows[0].out);
-        return res.rows[0].out;
+        console.log(res.rows[0])
+        return res;
     } finally {
         connect.release()
     }
