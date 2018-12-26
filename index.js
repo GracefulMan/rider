@@ -3,6 +3,7 @@ const Koa = require('koa');
 const config = require('./config');
 const bodyParser = require('koa-bodyparser');
 const mysql = require('mysql');
+const pg = require('pg');
 const logger = require('koa-logger');
 //const simpleServer1 = require('simple-server')(config.fileDir1,config.filePort1);
 const app = new Koa();
@@ -79,14 +80,40 @@ exports.query = (sql,values)=>{
                 connection.query(sql,values,(err,rows)=>{
                     if(err) reject(err);
                     else {
-                        console.log('成功了连接！！！');
                         resolve(rows);
                     }
                     connection.release();
-                    console.log('成功释放！！！');
                 })
             }
         })
     })
 };
 
+// test create postgreSQL connection pool
+var configPG = {
+    host: "101.132.146.158",
+    user: "postgres",
+    database: "rider",
+    password: "123456",
+    port: 5432,
+
+    // 扩展属性
+    max: 20, // 连接池最大连接数
+    idleTimeoutMillis: 3000, //连接最大空闲时间 3s
+};
+
+// 创建连接池
+var poolPG = new pg.Pool(configPG);
+
+exports.pgSQL = async ()=>{
+    let connect = await poolPG.connect();
+    try {
+        let res = await connect.query('SELECT $1::varchar AS OUT', ['helskjf'])
+        console.log(res.rows[0].out);
+        return res;
+    } finally {
+        connect.release()
+    }
+};
+
+query().catch(e => console.error(e.message, e.stack));

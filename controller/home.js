@@ -2,6 +2,7 @@
 const jwt = require('../middleware/jwt');
 const ScheduleModel = require('../model/schedule');
 const PeriodModel = require('../model/period');
+const connection=require('../index');
 
 const getMonthInfo = async ctx =>{
     let year = ctx.request.body.year;
@@ -60,9 +61,17 @@ const getDayTodo = async ctx =>{
     ctx.status = 200;
 };
 
+const testInfo = async ctx =>{
+    let result = {};
+    result['sql'] = await connection.pgSQL();
+    result['status'] = 'run';
+    ctx.body = result;
+    ctx.status = 200;
+}
+
 
 module.exports.routers = {
-
+    'GET /test/info': testInfo,
 
 };
 module.exports.securedRouters = {
