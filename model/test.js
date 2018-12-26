@@ -51,14 +51,4 @@ module.exports={
     test1,
     test2,
 
-    getMonthInfoTodo,
-    getMonthInfoAll,
-    getDayTodo,
-
-    changeScheduleNumSigned,
-    changeScheduleStatus,
-
-    addSchedule,
-
-    deleteSchedule
 };
