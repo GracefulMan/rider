@@ -24,9 +24,9 @@ const getDayTodo=(year, month, day)=>{
 };
 
 // UPDATE
-const changeScheduleNumSigned=(id, num)=>{
-    let _sql = `UPDATE time_schedule SET num_signed = ${num} WHERE id = ${id};`;
-    return connection.query(_sql);
+const test4=(id, num)=>{
+    let _sql = `UPDATE public.schedule SET num_signed = ${num} WHERE id = ${id};`;
+    return connection.pgSQL(_sql);
 };
 
 const changeScheduleStatus=(id, status)=>{
@@ -51,5 +51,6 @@ module.exports={
     test1,
     test2,
     test3,
+    test4,
 
 };

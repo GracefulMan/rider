@@ -86,13 +86,20 @@ const testDelete = async ctx =>{
     ctx.status = 200;
 };
 
+const testUpdate = async ctx =>{
+    let result = {};
+    result['sql'] = await TestModel.test4(2, 5);
+    result['status'] = 'run';
+    ctx.body = result;
+    ctx.status = 200;
+};
+
 
 module.exports.routers = {
     'GET /test/info': testInfo,
     'GET /test/insert': testInsert,
     'GET /test/delete': testDelete,
-
-
+    'GET /test/update': testUpdate,
 };
 module.exports.securedRouters = {
     'POST /home/month':getMonthInfo,
