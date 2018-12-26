@@ -2,7 +2,7 @@
 const jwt = require('../middleware/jwt');
 const ScheduleModel = require('../model/schedule');
 const PeriodModel = require('../model/period');
-const connection=require('../index');
+const TestModel = require('../model/test');
 
 const getMonthInfo = async ctx =>{
     let year = ctx.request.body.year;
@@ -63,7 +63,7 @@ const getDayTodo = async ctx =>{
 
 const testInfo = async ctx =>{
     let result = {};
-    result['sql'] = await connection.pgSQL('SELECT * FROM public.schedule');
+    result['sql'] = await TestModel.test1(2);
     result['status'] = 'run';
     ctx.body = result;
     ctx.status = 200;
