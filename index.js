@@ -108,7 +108,7 @@ var poolPG = new pg.Pool(configPG);
 exports.pgSQL = async ()=>{
     let connect = await poolPG.connect();
     try {
-        let res = await connect.query('SELECT $1::varchar AS OUT', ['helskjf'])
+        let res = await connect.query('SELECT Now()');
         console.log(res.rows[0].out);
         return res;
     } finally {
