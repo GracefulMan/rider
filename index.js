@@ -108,8 +108,7 @@ var poolPG = new pg.Pool(configPG);
 exports.pgSQL = async ()=>{
     let connect = await poolPG.connect();
     try {
-        let res = await connect.query('SELECT * FROM public.user');
-        console.log(res.rows[0].out);
+        let res = await connect.query('SELECT * FROM public.schedule.');
         console.log(res.rows[0])
         return res;
     } finally {
