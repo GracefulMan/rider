@@ -105,15 +105,14 @@ var configPG = {
 // 创建连接池
 var poolPG = new pg.Pool(configPG);
 
-exports.pgSQL = async ()=>{
+exports.pgSQL = async (sql,values)=>{
     let connect = await poolPG.connect();
     try {
-        let res = await connect.query('SELECT * FROM public.schedule;');
-        console.log(res.rows[0])
-        return res;
+        let res = await connect.query(sql,values);
+        return res.rows;
+    } catch (e){
+        console.error(e.message, e.stack);
     } finally {
-        connect.release()
+        connect.release();
     }
 };
-
-//query().catch(e => console.error(e.message, e.stack));

@@ -63,7 +63,7 @@ const getDayTodo = async ctx =>{
 
 const testInfo = async ctx =>{
     let result = {};
-    result['sql'] = await connection.pgSQL();
+    result['sql'] = await connection.pgSQL('SELECT * FROM public.schedule');
     result['status'] = 'run';
     ctx.body = result;
     ctx.status = 200;
