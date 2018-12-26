@@ -108,7 +108,7 @@ var poolPG = new pg.Pool(configPG);
 exports.pgSQL = async ()=>{
     let connect = await poolPG.connect();
     try {
-        let res = await connect.query('SELECT Now()');
+        let res = await connect.query('SELECT * FROM user');
         console.log(res.rows[0].out);
         return res;
     } finally {
