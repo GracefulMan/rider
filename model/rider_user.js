@@ -16,7 +16,7 @@ const getUserInfoById=(id)=>{
     return connection.pgSQL(_sql);
 };
 const getUserInfoByMobile=(mobile)=>{
-    let _sql = `SELECT * FROM pulic.r_user WHERE mobile = '${mobile}'`;
+    let _sql = `SELECT * FROM public.r_user WHERE mobile = '${mobile}'`;
     return connection.query(_sql);
 };
 
