@@ -17,7 +17,7 @@ const getUserInfoById=(id)=>{
 };
 const getUserInfoByMobile=(mobile)=>{
     let _sql = `SELECT * FROM public.r_user WHERE mobile = '${mobile}'`;
-    return connection.query(_sql);
+    return connection.pgSQL(_sql);
 };
 
 module.exports={
