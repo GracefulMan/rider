@@ -67,10 +67,7 @@ const getDayTodo = async ctx =>{
 };
 
 module.exports.routers = {
-    'GET /test/info': testInfo,
-    'GET /test/insert': testInsert,
-    'GET /test/delete': testDelete,
-    'GET /test/update': testUpdate,
+
 };
 module.exports.securedRouters = {
     'POST /home/month':getMonthInfo,
