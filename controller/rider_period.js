@@ -95,8 +95,10 @@ const getUserDayDone = async ctx =>{
     let day = ctx.request.body.day;
     let token = jwt.getToken(ctx);
     let uid = token.uid;
-    let userDayDone = await RPeriodModel.getUserDayDone(year, month, day, uid);
-    ctx.body = userDayDone;
+    console.log(uid);
+    console.log(day);
+    let userDoneDay = await RPeriodModel.getUserDayDone(year, month, day, uid);
+    ctx.body = userDoneDay;
     ctx.status = 200;
 };
 
