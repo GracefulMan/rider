@@ -34,9 +34,12 @@ const getPeriodByUidScheduleId=(uid, schedule_id)=>{
     AND schedule_id = ${schedule_id};`;
     return connection.pgSQL(_sql);
 };
-const getUserDone=(start, end, uid)=>{
-    let _sql = `SELECT * FROM public.r_period WHERE uid = ${uid} AND status = 2
-    AND start_time > '${start}' AND start_time < '${end}';`;
+const getUserMonthDone=(year, month, uid)=>{
+    let _sql = `SELECT r_schedule.year, r_schedule.month, r_schedule.day FROM public.r_schedule 
+    INNER JOIN public.r_period ON r_period.schedule_id = r_schedule.id
+    WHERE r_period.uid = ${uid} AND r_schedule.year = ${year} AND r_schedule.month = ${month} AND 
+    r_period.status = 2
+    GROUP BY year, month, day ORDER BY day;`;
     return connection.pgSQL(_sql);
 };
 
@@ -71,7 +74,7 @@ module.exports={
     getUserTodoAll,
     getUserTodoDay,
     getPeriodByUidScheduleId,
-    getUserDone,
+    getUserMonthDone,
 
     checkPeriodByPhoneTime,
 

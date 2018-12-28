@@ -62,7 +62,7 @@ const addUser = async ctx =>{
     }
 };
 
-// Todo 用户微信登录
+// 用户微信登录
 const userLoginByWechat = async ctx =>{
     let code = ctx.query.code;
     let url ="https://api.weixin.qq.com/sns/jscode2session?appid="+config.appid+"&secret="+config.appsecret+"&js_code="+code+"&grant_type=authorization_code";
@@ -82,7 +82,7 @@ const userLoginByWechat = async ctx =>{
     }
 };
 
-// Todo 获取用户信息
+// 获取用户信息
 const getUserInfo = async ctx =>{
     let token = jwt.getToken(ctx);
     let uid = token.uid;

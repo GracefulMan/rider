@@ -8,7 +8,7 @@ const RTransferModel = require('../model/rider_transfer');
 // Todo 添加班次信息
 
 
-// Todo 某月的班次信息
+// 某月的班次信息
 const getMonthInfo = async ctx =>{
     let year = ctx.request.body.year;
     let month = ctx.request.body.month;
@@ -46,7 +46,7 @@ const getMonthInfo = async ctx =>{
     ctx.status = 200;
 };
 
-// Todo 某日的待完成班次
+// 某日的待完成班次
 const getDayTodo = async ctx =>{
     let token = jwt.getToken(ctx);
     let uid = token.uid;
