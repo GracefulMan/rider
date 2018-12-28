@@ -44,28 +44,25 @@ const checkUserPeriod = async(ctx)=>{
     ctx.status = 200;
 }; */
 
-// Todo 添加用户
+// 添加用户
 const addUser = async ctx =>{
     let mobile = ctx.request.body.mobile;
     let nickName = ctx.request.body.nickName;
     let avatar = ctx.request.body.avatar;
     let openId = ctx.request.body.openId;
     let userId = ctx.request.body.userId;
-    let result = {};
     let checkUser = await RUserModel.getUserInfoByMobile(mobile);
     if (checkUser.length === 0) {
         await RUserModel.addUser(mobile, userId, openId, avatar, nickName);
-        ctx.msg = '用户绑定成功';
         ctx.body = '用户绑定成功';
         ctx.status = 200;
     } else {
-        result['msg'] = '绑定用户已存在，请勿重复提交';
-        ctx.body = result;
+        ctx.body = '绑定用户已存在，请勿重复提交';
         ctx.status = 403;
     }
 };
 
-// 用户微信登录
+// Todo 用户微信登录
 const userLoginByWechat = async ctx =>{
     let code = ctx.query.code;
     let url ="https://api.weixin.qq.com/sns/jscode2session?appid="+config.appid+"&secret="+config.appsecret+"&js_code="+code+"&grant_type=authorization_code";
@@ -74,7 +71,7 @@ const userLoginByWechat = async ctx =>{
         ctx.status = 410;
         return;
     }
-    let userInfo = await UserModel.getUserInfoByOpenId(openId);
+    let userInfo = await RUserModel.getUserInfoByOpenId(openId);
     if (userInfo.length === 0) {
         ctx.status = 401;
         ctx.body = "用户未绑定微信";
@@ -85,12 +82,11 @@ const userLoginByWechat = async ctx =>{
     }
 };
 
-// 获取用户信息
+// Todo 获取用户信息
 const getUserInfo = async ctx =>{
     let token = jwt.getToken(ctx);
-    console.log(token);
     let uid = token.uid;
-    let userInfo = await UserModel.getUserInfoById(uid);
+    let userInfo = await RUserModel.getUserInfoById(uid);
     if (userInfo.length === 0) {
         ctx.status = 410;
         ctx.body = "未获取到用户信息";
@@ -98,50 +94,17 @@ const getUserInfo = async ctx =>{
         let result = {};
         result['phone'] = userInfo[0].phone;
         result['total_time'] = userInfo[0].total_time;
-        result['unfinish_times'] = userInfo[0].unfinish_times;
+        result['default_time'] = userInfo[0].default_time;
         ctx.body = result;
         ctx.status = 200;
     }
 };
-// 获取用户待完成
-const getUserTodo = async ctx =>{
-    let token = jwt.getToken(ctx);
-    let uid = token.uid;
-    let periodsTodo = await PeriodModel.getUserTodoAll(uid);
-    ctx.body = periodsTodo;
-    ctx.status = 200;
-};
-// 获取用户月份已完成
-const getUserMonthDone = async ctx =>{
-    let year = ctx.request.body.year;
-    let month = ctx.request.body.month;
-    let token = jwt.getToken(ctx);
-    let uid = token.uid;
-    let userMonthDone = await PeriodModel.getUserMonthDone(year, month, uid);
-    for (let i=0; i<userMonthDone.length; i++) {
-        userMonthDone[i]['status'] = 3;
-    }
-    ctx.body = userMonthDone;
-    ctx.status = 200;
-};
-// 获取用户日已完成
-const getUserDayDone = async ctx =>{
-    let year = ctx.request.body.year;
-    let month = ctx.request.body.month;
-    let day = ctx.request.body.day;
-    let token = jwt.getToken(ctx);
-    let uid = token.uid;
-    let userDayDone = await PeriodModel.getUserDayDone(year, month, day, uid);
-    ctx.body = userDayDone;
-    ctx.status = 200;
-};
 
 
 module.exports.routers = {
-
-    'POST /rider/user/add':addUser,
-
+    'POST /rider/user/add':addUser
 };
 module.exports.securedRouters = {
-
+    'GET /rider/user/login': userLoginByWechat,
+    'GET /rider/user/info': getUserInfo
 };
