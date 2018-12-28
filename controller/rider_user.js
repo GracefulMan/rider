@@ -102,9 +102,10 @@ const getUserInfo = async ctx =>{
 
 
 module.exports.routers = {
+    'GET /rider/user/login': userLoginByWechat,
     'POST /rider/user/add':addUser
 };
 module.exports.securedRouters = {
-    'GET /rider/user/login': userLoginByWechat,
+
     'GET /rider/user/info': getUserInfo
 };

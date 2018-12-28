@@ -8,7 +8,7 @@ const RTransferModel = require('../model/rider_transfer');
 // Todo 添加班次信息
 
 
-// Todo 获取月份班次信息
+// Todo 某月的班次信息
 const getMonthInfo = async ctx =>{
     let year = ctx.request.body.year;
     let month = ctx.request.body.month;
@@ -24,11 +24,11 @@ const getMonthInfo = async ctx =>{
             if (monthInfoTodo[j].day === dayInfo.day) {
                 let day = dayInfo.day;
                 let dayTodo = await RScheduleModel.getDayTodo(year, month, day);
-                let userDayTodo = await RPeriodModel.getUserDayTodo(year, month, day, uid);
+                let userDayTodo = await RPeriodModel.getUserTodoDay(year, month, day, uid);
                 for (let i=0; i<userDayTodo.length; i++) {
-                    let timeid = userDayTodo[i].timeid;
+                    let schedule_id = userDayTodo[i].id;
                     for (let j=0; j<dayTodo.length; j++) {
-                        if (dayTodo[j].id === timeid) {
+                        if (dayTodo[j].id === schedule_id) {
                             dayTodo.splice(j,1);
                             break;
                         }
@@ -45,18 +45,20 @@ const getMonthInfo = async ctx =>{
     ctx.body = monthInfo;
     ctx.status = 200;
 };
+
+// Todo 某日的待完成班次
 const getDayTodo = async ctx =>{
     let token = jwt.getToken(ctx);
     let uid = token.uid;
     let year = ctx.request.body.year;
     let month = ctx.request.body.month;
     let day = ctx.request.body.day;
-    let dayTodo = await ScheduleModel.getDayTodo(year, month, day);
-    let userDayTodo = await PeriodModel.getUserDayTodo(year, month, day, uid);
+    let dayTodo = await RScheduleModel.getDayTodo(year, month, day);
+    let userDayTodo = await RPeriodModel.getUserTodoDay(year, month, day, uid);
     for (let i=0; i<userDayTodo.length; i++) {
-        let timeid = userDayTodo[i].timeid;
+        let schedule_id = userDayTodo[i].id;
         for (let j=0; j<dayTodo.length; j++) {
-            if (dayTodo[j].id === timeid) {
+            if (dayTodo[j].id === schedule_id) {
                 dayTodo.splice(j,1);
                 break;
             }
@@ -70,6 +72,6 @@ module.exports.routers = {
 
 };
 module.exports.securedRouters = {
-    'POST /home/month':getMonthInfo,
-    'POST /home/day':getDayTodo,
+    'POST /rider/schedule/month':getMonthInfo,
+    'POST /rider/schedule/day':getDayTodo,
 };
