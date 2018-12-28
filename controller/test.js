@@ -67,7 +67,7 @@ const getDayTodo = async ctx =>{
 
 const testInfo = async ctx =>{
     let result = {};
-    result['sql'] = await RPeriodModel.getUserTodoDay(2018, 12, 30, 3).;
+    result['sql'] = await RPeriodModel.getUserTodoDay(2018, 12, 30, 3);
     result['status'] = 'run';
     ctx.body = result;
     ctx.status = 200;
