@@ -80,6 +80,7 @@ const getUserMonthDone = async ctx =>{
     let token = jwt.getToken(ctx);
     let uid = token.uid;
     let userMonthDone = await RPeriodModel.getUserMonthDone(year, month, uid);
+    console.log(userMonthDone);
     for (let i=0; i<userMonthDone.length; i++) {
         userMonthDone[i]['status'] = 3;
     }
