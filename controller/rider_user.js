@@ -54,7 +54,7 @@ const addUser = async ctx =>{
     let result = {};
     let checkUser = await RUserModel.getUserInfoByMobile(mobile);
     if (checkUser.length === 0) {
-        let result = await RUserModel.addUser(mobile, userId, openId, avatar, nickName);
+        await RUserModel.addUser(mobile, userId, openId, avatar, nickName);
         result['msg'] = '用户绑定成功';
         ctx.body = result;
         ctx.status = 200;
