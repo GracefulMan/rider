@@ -46,7 +46,7 @@ const getUserDayDone=(year, month, day, uid)=>{
     let _sql = `SELECT r_schedule.period FROM public.r_schedule 
     INNER JOIN public.r_period ON r_period.schedule_id = r_schedule.id
     WHERE r_period.uid = ${uid} AND r_schedule.year = ${year} AND r_schedule.month = ${month} AND 
-    r_schedule.month = ${day} AND r_period.status = 2
+    r_schedule.day = ${day} AND r_period.status = 2
     ORDER BY r_period.start_time;`;
     return connection.pgSQL(_sql);
 };
