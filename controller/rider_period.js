@@ -80,11 +80,23 @@ const getUserMonthDone = async ctx =>{
     let token = jwt.getToken(ctx);
     let uid = token.uid;
     let userMonthDone = await RPeriodModel.getUserMonthDone(year, month, uid);
-    console.log(userMonthDone);
     for (let i=0; i<userMonthDone.length; i++) {
         userMonthDone[i]['status'] = 3;
     }
     ctx.body = userMonthDone;
+    ctx.status = 200;
+};
+
+
+// Todo 获取用户某日已完成
+const getUserDayDone = async ctx =>{
+    let year = ctx.request.body.year;
+    let month = ctx.request.body.month;
+    let day = ctx.request.body.day;
+    let token = jwt.getToken(ctx);
+    let uid = token.uid;
+    let userDayDone = await RPeriodModel.getUserDayDone(year, month, day, uid);
+    ctx.body = userDayDone;
     ctx.status = 200;
 };
 
@@ -99,5 +111,6 @@ module.exports.securedRouters = {
     'POST /rider/period/add':periodAdd,
 
     'POST /rider/period/done/month': getUserMonthDone,
+    'POST /rider/period/done/day': getUserDayDone,
 
 };

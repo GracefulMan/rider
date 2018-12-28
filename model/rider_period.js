@@ -42,6 +42,14 @@ const getUserMonthDone=(year, month, uid)=>{
     GROUP BY year, month, day ORDER BY day;`;
     return connection.pgSQL(_sql);
 };
+const getUserDayDone=(year, month, uid)=>{
+    let _sql = `SELECT r_schedule.period FROM public.r_schedule 
+    INNER JOIN public.r_period ON r_period.schedule_id = r_schedule.id
+    WHERE r_period.uid = ${uid} AND r_schedule.year = ${year} AND r_schedule.month = ${month} AND 
+    r_period.status = 2
+    ORDER BY r_period.start_time;`;
+    return connection.pgSQL(_sql);
+};
 
 // UPDATE
 const updatePeriodStatus=(id, status)=>{
@@ -75,6 +83,7 @@ module.exports={
     getUserTodoDay,
     getPeriodByUidScheduleId,
     getUserMonthDone,
+    getUserDayDone,
 
     checkPeriodByPhoneTime,
 
