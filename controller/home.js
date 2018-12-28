@@ -90,6 +90,7 @@ const testUpdate = async ctx =>{
     let result = {};
     result['sql'] = await TestModel.test4(2, 5);
     result['status'] = 'run';
+    ctx.msg = 'run';
     ctx.body = result;
     ctx.status = 200;
 };

@@ -55,8 +55,8 @@ const addUser = async ctx =>{
     let checkUser = await RUserModel.getUserInfoByMobile(mobile);
     if (checkUser.length === 0) {
         await RUserModel.addUser(mobile, userId, openId, avatar, nickName);
-        result['msg'] = '用户绑定成功';
-        ctx.body = result;
+        ctx.msg = '用户绑定成功';
+        ctx.body = '用户绑定成功';
         ctx.status = 200;
     } else {
         result['msg'] = '绑定用户已存在，请勿重复提交';
