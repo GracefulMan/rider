@@ -20,13 +20,13 @@ const getScheduleAllByDate=(start, end)=>{
 
 const getMonthTodo=(year, month)=>{
     let _sql = `SELECT year, month, day FROM public.r_schedule 
-    WHERE status = 1 AND year = ${year} AND month = ${month} 
+    WHERE status = 1 AND year = ${year} AND month = ${month} AND start_time > now()
     GROUP BY year, month, day ORDER BY day;`;
     return connection.pgSQL(_sql);
 };
 const getMonthAll=(year, month)=>{
     let _sql = `SELECT year, month, day FROM public.r_schedule 
-    WHERE year = ${year} AND month = ${month} 
+    WHERE year = ${year} AND month = ${month} AND start_time > now()
     GROUP BY year, month, day ORDER BY day;`;
     return connection.pgSQL(_sql);
 };
