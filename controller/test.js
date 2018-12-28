@@ -3,6 +3,10 @@ const jwt = require('../middleware/jwt');
 const ScheduleModel = require('../model/schedule');
 const PeriodModel = require('../model/period');
 const TestModel = require('../model/test');
+const RScheduleModel = require('../model/rider_schedule');
+const RPeriodModel = require('../model/rider_period');
+const RUserModel = require('../model/rider_user');
+const RTransferModel = require('../model/rider_transfer');
 
 const getMonthInfo = async ctx =>{
     let year = ctx.request.body.year;
@@ -63,7 +67,7 @@ const getDayTodo = async ctx =>{
 
 const testInfo = async ctx =>{
     let result = {};
-    result['sql'] = await TestModel.test1(2);
+    result['sql'] = await RPeriodModel.getUserTodoDay(2018, 12, 30, 3).;
     result['status'] = 'run';
     ctx.body = result;
     ctx.status = 200;
@@ -97,9 +101,11 @@ const testUpdate = async ctx =>{
 
 
 module.exports.routers = {
-
+    'GET /test/info': testInfo,
+    'GET /test/insert': testInsert,
+    'GET /test/delete': testDelete,
+    'GET /test/update': testUpdate,
 };
 module.exports.securedRouters = {
-    'POST /home/month':getMonthInfo,
-    'POST /home/day':getDayTodo,
+
 };

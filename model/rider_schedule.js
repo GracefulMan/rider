@@ -8,13 +8,31 @@ const getScheduleById=(id)=>{
 };
 
 const getScheduleTodoByDate=(start, end)=>{
-    let _sql = `SELECT DISTINCT start_time FROM public.r_schedule WHERE 
-    start_time > '${start}' AND start_time < '${end}' AND status = 1;`;
+    let _sql = `SELECT * FROM public.r_schedule WHERE status = 1 AND
+    start_time > '${start}' AND end_time < '${end}';`;
     return connection.pgSQL(_sql);
 };
 const getScheduleAllByDate=(start, end)=>{
-    let _sql = `SELECT DISTINCT start_time FROM public.r_schedule WHERE 
-    start_time > '${start}' AND start_time < '${end}';`;
+    let _sql = `SELECT * FROM public.r_schedule WHERE 
+    start_time > '${start}' AND end_time < '${end}';`;
+    return connection.pgSQL(_sql);
+};
+
+const getMonthTodo=(year, month)=>{
+    let _sql = `SELECT year, month, day FROM public.r_schedule 
+    WHERE status = 1 AND year = ${year} AND month = ${month} 
+    GROUP BY year, month, day ORDER BY day;`;
+    return connection.pgSQL(_sql);
+};
+const getMonthAll=(year, month)=>{
+    let _sql = `SELECT year, month, day FROM public.r_schedule 
+    WHERE year = ${year} AND month = ${month} 
+    GROUP BY year, month, day ORDER BY day;`;
+    return connection.pgSQL(_sql);
+};
+const getDayTodo=(year, month, day)=>{
+    let _sql = `SELECT * FROM public.r_schedule WHERE status = 1 AND 
+    year = ${year} AND month = ${month} AND day = ${day};`;
     return connection.pgSQL(_sql);
 };
 
@@ -30,9 +48,10 @@ const changeScheduleStatus=(id, status)=>{
 };
 
 // INSERT
-const addSchedule=(start_time, end_time, num_needed)=>{
-    let _sql = `INSERT INTO public.r_schedule (start_time, end_time, num_needed, num_signed, status)VALUES
-    ('${start_time}', '${end_time}', ${num_needed}, 0, 1);`;
+const addSchedule=(year, month, day, period, start_time, end_time, num_needed)=>{
+    let _sql = `INSERT INTO public.r_schedule (year, month, day, period, start_time, end_time, 
+    num_needed, num_signed, status)VALUES
+    (${year}, ${month}, ${day}, '${period}', '${start_time}', '${end_time}', ${num_needed}, 0, 1);`;
     return connection.pgSQL(_sql);
 };
 
@@ -46,6 +65,9 @@ module.exports={
     getScheduleById,
     getScheduleTodoByDate,
     getScheduleAllByDate,
+    getMonthTodo,
+    getMonthAll,
+    getDayTodo,
 
     changeScheduleNumSigned,
     changeScheduleStatus,

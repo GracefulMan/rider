@@ -5,23 +5,26 @@ const RPeriodModel = require('../model/rider_period');
 const RUserModel = require('../model/rider_user');
 const RTransferModel = require('../model/rider_transfer');
 
+// Todo 添加班次信息
+
+
 // Todo 获取月份班次信息
 const getMonthInfo = async ctx =>{
-    let start = ctx.request.body.start;
-    let end = ctx.request.body.end;
+    let year = ctx.request.body.year;
+    let month = ctx.request.body.month;
     let token = jwt.getToken(ctx);
     let uid = token.uid;
-    let monthInfoTodo = await RScheduleModel.getScheduleTodoByDate(start, end);
-    let monthInfoAll = await RScheduleModel.getScheduleAllByDate(start, end);
+    let monthInfoTodo = await RScheduleModel.getMonthTodo(year, month);
+    let monthInfoAll = await RScheduleModel.getMonthAll(year, month);
     let monthInfo = [];
     for (let i=0; i<monthInfoAll.length; i++) {
         let dayInfo = monthInfoAll[i];
         dayInfo['status'] = 2;
         for (let j = 0; j < monthInfoTodo.length; j++) {
             if (monthInfoTodo[j].day === dayInfo.day) {
-                let day = dayInfo.day; // Todo
-                let dayTodo = await ScheduleModel.getDayTodo(year, month, day);
-                let userDayTodo = await PeriodModel.getUserDayTodo(year, month, day, uid);
+                let day = dayInfo.day;
+                let dayTodo = await RScheduleModel.getDayTodo(year, month, day);
+                let userDayTodo = await RPeriodModel.getUserDayTodo(year, month, day, uid);
                 for (let i=0; i<userDayTodo.length; i++) {
                     let timeid = userDayTodo[i].timeid;
                     for (let j=0; j<dayTodo.length; j++) {
@@ -62,41 +65,6 @@ const getDayTodo = async ctx =>{
     ctx.body = dayTodo;
     ctx.status = 200;
 };
-
-const testInfo = async ctx =>{
-    let result = {};
-    result['sql'] = await TestModel.test1(2);
-    result['status'] = 'run';
-    ctx.body = result;
-    ctx.status = 200;
-};
-
-const testInsert = async ctx =>{
-    let result = {};
-    result['sql'] = await TestModel.test2('2018-12-25 18:00', '2018-12-25 18:30', 10);
-    result['status'] = 'run';
-    ctx.body = result;
-    ctx.status = 200;
-};
-
-
-const testDelete = async ctx =>{
-    let result = {};
-    result['sql'] = await TestModel.test3(3);
-    result['status'] = 'run';
-    ctx.body = result;
-    ctx.status = 200;
-};
-
-const testUpdate = async ctx =>{
-    let result = {};
-    result['sql'] = await TestModel.test4(2, 5);
-    result['status'] = 'run';
-    ctx.msg = 'run';
-    ctx.body = result;
-    ctx.status = 200;
-};
-
 
 module.exports.routers = {
     'GET /test/info': testInfo,

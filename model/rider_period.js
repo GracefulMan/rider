@@ -22,9 +22,11 @@ const getUserTodoAll=(uid)=>{
     let _sql = `SELECT * FROM public.r_period WHERE uid = ${uid} AND (status = 1 OR status = 3);`;
     return connection.pgSQL(_sql);
 };
-const getUserTodoByTime=(start, end, uid)=>{
-    let _sql = `SELECT * FROM public.r_period WHERE uid = ${uid} AND (status = 1 OR status = 3) 
-    AND start_time > '${start}' AND start_time < '${end}'`;
+const getUserTodoDay=(year, month, day, uid)=>{
+    let _sql = `SELECT public.r_schedule.id FROM public.r_schedule 
+    INNER JOIN public.r_period ON r_period.schedule_id = r_schedule.id
+    WHERE r_period.uid = ${uid} AND r_schedule.year = ${year} AND r_schedule.month = ${month} AND 
+    r_schedule.day = ${day} AND (r_period.status = 1 OR r_period.status = 3);`;
     return connection.pgSQL(_sql);
 };
 const getPeriodByUidScheduleId=(uid, schedule_id)=>{
@@ -67,7 +69,7 @@ module.exports={
     getPeriod,
     getUserTodoOnly,
     getUserTodoAll,
-    getUserTodoByTime,
+    getUserTodoDay,
     getPeriodByUidScheduleId,
     getUserDone,
 
