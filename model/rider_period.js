@@ -64,8 +64,8 @@ const updatePeriodUser=(id, uid, mobile, car)=>{
 };
 
 // INSERT
-const addPeriod=(schedule_id, uid, mobile, start_time, car_had)=>{
-    let _sql = `INSERT INTO public.r_period (schedule_id, uid, mobile, start_time, car_had, status)VALUES
+const addPeriod=(schedule_id, uid, mobile, car_had)=>{
+    let _sql = `INSERT INTO public.r_period (schedule_id, uid, mobile, car_had, status)VALUES
     (${schedule_id}, ${uid}, '${mobile}', '${start_time}', ${car_had}, 1);`;
     return connection.pgSQL(_sql);
 };
