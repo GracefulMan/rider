@@ -20,6 +20,8 @@ const periodAdd = async ctx =>{
         let userInfo = await RUserModel.getUserInfoById(uid);
         let mobile = userInfo[0].mobile;
         let start_time = schedule[0].start_time;
+        console.log(mobile);
+        console.log(start_time);
         await RPeriodModel.addPeriod(scheduleId, uid, mobile, start_time, car);
         ctx.body = '添加成功';
         ctx.status = 200;
