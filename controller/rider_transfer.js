@@ -91,8 +91,7 @@ const cancelMyTransfer = async ctx =>{
 const getOthersTransfer = async ctx =>{
     let token = jwt.getToken(ctx);
     let uidB = token.uid;
-    let status = ctx.request.body.status;
-    let othersTransfer = await RTransferModel.getOthersTransfer(uidB, status);
+    let othersTransfer = await RTransferModel.getOthersTransfer(uidB);
     for (let i=0; i<othersTransfer.length; i++) {
         let periods = othersTransfer[i].periods.split(",");
         console.log(periods);
@@ -118,7 +117,7 @@ const acceptOthersTransfer = async ctx =>{
     let uidBPeriods = [];  // 骑手B待完成相冲突的时段
     for (let i=0; i< periods.length; i++) {
         let period = await RPeriodModel.getPeriod(periods[i]);
-        let schedule_id = period[0].shcedule_id;
+        let schedule_id = period[0].schedule_id;
         let uidBPeriod = await RPeriodModel.getPeriodByUidScheduleId(uidB, schedule_id);
         if (uidBPeriod.length > 0) {
             uidBPeriods.push(uidBPeriod[0])
