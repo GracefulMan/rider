@@ -8,13 +8,13 @@ const RTransferModel = require('../model/rider_transfer');
 const getMyTransfer = async ctx =>{
     let token = jwt.getToken(ctx);
     let uidA = token.uid;
-    let myTransfer = await TransferModel.getMyTransfer(uidA);
+    let myTransfer = await RTransferModel.getMyTransfer(uidA);
     for (let i=0; i<myTransfer.length; i++) {
         let periods = myTransfer[i].periods.split(",");
         console.log(periods);
         let timeList = [];
         for (let j=0; j<periods.length; j++) {
-            let period = await PeriodModel.getPeriod(Number(periods[j]));
+            let period = await RPeriodModel.getPeriod(Number(periods[j]));
             timeList.push(period[0]);
         }
         myTransfer[i]['timeList'] = timeList;
@@ -26,9 +26,9 @@ const getMyTransfer = async ctx =>{
 const submitMyTransfer = async ctx =>{
     let token = jwt.getToken(ctx);
     let uidA = token.uid;
-    let userphoneB = ctx.request.body.userphoneB;
+    let mobileB = ctx.request.body.mobileB;
     let periods = ctx.request.body.periods;
-    let userB = await UserModel.getUserInfoByPhone(userphoneB);
+    let userB = await RUserModel.getUserInfoByMobile(mobileB);
     let result = {};
     if (userB.length === 0) {
         result['msg'] = '填入的骑手用户不存在或未绑定微信';
@@ -36,16 +36,16 @@ const submitMyTransfer = async ctx =>{
         ctx.status = 406;
         return
     }
-    let userA = await UserModel.getUserInfoById(uidA);
-    let userphoneA = userA[0].phone;
+    let userA = await RUserModel.getUserInfoById(uidA);
+    let mobileA = userA[0].mobile;
     let uidB = userB[0].id;
     let periodsArray = periods.split(",");
     let uidBPeriods = [];  // 骑手B待完成相冲突的时段
     for (let i=0; i<periodsArray.length; i++) {
-        let period = await PeriodModel.getPeriod(periodsArray[i]);
+        let period = await RPeriodModel.getPeriod(periodsArray[i]);
         console.log(period);
-        let timeid = period[0].timeid;
-        let uidBPeriod = await PeriodModel.getPeriodByUidTimeid(uidB, timeid);
+        let schedule_id = period[0].schedule_id;
+        let uidBPeriod = await RPeriodModel.getPeriodByUidScheduleId(uidB, schedule_id);
         if (uidBPeriod.length > 0) {
             uidBPeriods.push(uidBPeriod[0])
         }
@@ -56,12 +56,13 @@ const submitMyTransfer = async ctx =>{
         ctx.body = result;
         ctx.status = 403;
     } else {
-        let submitMyTransfer = await TransferModel.submitMyTransfer(uidA, userphoneA, uidB, userphoneB, periods);  // 代班请求改为转让中状态
+        let start_time = '2018-12-31 18:00:00';
+        let submitMyTransfer = await RTransferModel.submitMyTransfer(uidA, mobileA, uidB, mobileB, periods, start_time);  // 代班请求改为转让中状态
         for (let i=0; i< periodsArray.length; i++) {  // 骑手A对应班次状态改为待完成
-            let period = await PeriodModel.getPeriod(periodsArray[i]);
+            let period = await RPeriodModel.getPeriod(periodsArray[i]);
             console.log(period);
             if (period[0].status === 1) {
-                await PeriodModel.updatePeriodStatus(periodsArray[i], 3);
+                await RPeriodModel.updatePeriodStatus(periodsArray[i], 3);
             }
         }
         result['return'] = submitMyTransfer;
@@ -72,13 +73,13 @@ const submitMyTransfer = async ctx =>{
 };
 const cancelMyTransfer = async ctx =>{
     let id  = ctx.request.body.id;
-    let cancelMyTransfer = await TransferModel.cancelMyTransfer(id);  // 代班请求改为取消状态
-    let transfer = await TransferModel.getTransferById(id);
+    let cancelMyTransfer = await RTransferModel.cancelMyTransfer(id);  // 代班请求改为取消状态
+    let transfer = await RTransferModel.getTransferById(id);
     let periods = transfer[0].periods.split(",");
     for (let i=0; i<periods.length; i++) {  // 骑手A对应班次状态回到待完成
-        let period = await PeriodModel.getPeriod(periods[i]);
+        let period = await RPeriodModel.getPeriod(periods[i]);
         if (period[0].status === 3) {
-            await PeriodModel.updatePeriodStatus(periods[i], 1);
+            await RPeriodModel.updatePeriodStatus(periods[i], 1);
         }
     }
     let result = {};
@@ -91,13 +92,13 @@ const getOthersTransfer = async ctx =>{
     let token = jwt.getToken(ctx);
     let uidB = token.uid;
     let status = ctx.request.body.status;
-    let othersTransfer = await TransferModel.getOthersTransfer(uidB, status);
+    let othersTransfer = await RTransferModel.getOthersTransfer(uidB, status);
     for (let i=0; i<othersTransfer.length; i++) {
         let periods = othersTransfer[i].periods.split(",");
         console.log(periods);
         let timeList = [];
         for (let j=0; j<periods.length; j++) {
-            let period = await PeriodModel.getPeriod(Number(periods[j]));
+            let period = await RPeriodModel.getPeriod(Number(periods[j]));
             timeList.push(period[0]);
         }
         othersTransfer[i]['timeList'] = timeList;
@@ -110,15 +111,15 @@ const getOthersTransfer = async ctx =>{
 const acceptOthersTransfer = async ctx =>{
     let id  = ctx.request.body.id;
     let car = ctx.request.body.car;
-    let transfer = await  TransferModel.getTransferById(id);
+    let transfer = await  RTransferModel.getTransferById(id);
     let periods = transfer[0].periods.split(",");
     let uidB = transfer[0].uidB;
-    let userphoneB = transfer[0].userphoneB;
+    let mobileB = transfer[0].mobileB;
     let uidBPeriods = [];  // 骑手B待完成相冲突的时段
     for (let i=0; i< periods.length; i++) {
-        let period = await PeriodModel.getPeriod(periods[i]);
-        let timeid = period[0].timeid;
-        let uidBPeriod = await PeriodModel.getPeriodByUidTimeid(uidB, timeid);
+        let period = await RPeriodModel.getPeriod(periods[i]);
+        let schedule_id = period[0].shcedule_id;
+        let uidBPeriod = await RPeriodModel.getPeriodByUidScheduleId(uidB, schedule_id);
         if (uidBPeriod.length > 0) {
             uidBPeriods.push(uidBPeriod[0])
         }
@@ -130,12 +131,12 @@ const acceptOthersTransfer = async ctx =>{
         ctx.body = result;
         ctx.status = 403;
     } else {
-        let acceptOthersTransfer = await TransferModel.acceptOthersTransfer(id);  // 代班请求改为已接受状态
+        let acceptOthersTransfer = await RTransferModel.acceptOthersTransfer(id);  // 代班请求改为已接受状态
         for (let i=0; i< periods.length; i++) {  // 送餐时段骑手信息改为B，状态改为待完成
-            let period = await PeriodModel.getPeriod(periods[i]);
+            let period = await RPeriodModel.getPeriod(periods[i]);
             if (period[0].status === 3) {
-                await PeriodModel.updatePeriodStatus(periods[i], 1);
-                await PeriodModel.updatePeriodUser(periods[i], uidB, userphoneB, car);
+                await RPeriodModel.updatePeriodStatus(periods[i], 1);
+                await RPeriodModel.updatePeriodUser(periods[i], uidB, mobileB, car);
             }
         }
         result['return'] = acceptOthersTransfer;
@@ -146,13 +147,13 @@ const acceptOthersTransfer = async ctx =>{
 };
 const rejectOthersTransfer = async ctx =>{
     let id  = ctx.request.body.id;
-    let rejectOthersTransfer = await TransferModel.rejectOthersTransfer(id);  // 代班请求改为被拒绝状态
-    let transfer = await TransferModel.getTransferById(id);
+    let rejectOthersTransfer = await RTransferModel.rejectOthersTransfer(id);  // 代班请求改为被拒绝状态
+    let transfer = await RTransferModel.getTransferById(id);
     let periods = transfer[0].periods.split(",");
     for (let i=0; i<periods.length; i++) {  // 骑手A对应班次状态回到待完成
-        let period = await PeriodModel.getPeriod(periods[i]);
+        let period = await RPeriodModel.getPeriod(periods[i]);
         if (period[0].status === 3) {
-            await PeriodModel.updatePeriodStatus(periods[i], 1);
+            await RPeriodModel.updatePeriodStatus(periods[i], 1);
         }
     }
     let result = {};

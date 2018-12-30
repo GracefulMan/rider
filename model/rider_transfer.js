@@ -20,7 +20,7 @@ const getOthersTransfer=(uidB)=>{
 // INSERT
 const submitMyTransfer=(uidA, mobileA, uidB, mobileB, periods, start_time)=>{
     let _sql = `INSERT INTO public.r_transfer (finder_id, finder_mobile, acceptor_id, 
-    acceptor_mobile, periods, first_start_time status)VALUES(${uidA}, '${mobileA}', ${uidB}, 
+    acceptor_mobile, periods, first_start_time, status)VALUES(${uidA}, '${mobileA}', ${uidB}, 
     '${mobileB}', '${periods}', '${start_time}', 1);`;
     return connection.pgSQL(_sql);
 };

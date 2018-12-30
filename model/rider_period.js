@@ -11,7 +11,10 @@ const checkPeriodByPhoneTime=(uid, date)=>{
 
 // SELECT
 const getPeriod=(id)=>{
-    let _sql = `SELECT * FROM public.r_period WHERE id = ${id}`;
+    let _sql = `SELECT r_period.id, r_period.status, r_schedule.year, r_schedule.month, r_schedule.day, 
+    r_schedule.period, r_period.schedule_id 
+    FROM public.r_period INNER JOIN public.r_schedule ON r_period.schedule_id = r_schedule.id
+    WHERE r_period.id = ${id}`;
     return connection.pgSQL(_sql);
 };
 const getUserTodoOnly=(uid)=>{
