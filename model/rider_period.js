@@ -15,11 +15,17 @@ const getPeriod=(id)=>{
     return connection.pgSQL(_sql);
 };
 const getUserTodoOnly=(uid)=>{
-    let _sql = `SELECT * FROM public.r_period WHERE uid = ${uid} AND status = 1;`;
+    let _sql = `SELECT r_period.id, r_period.status, r_schedule.year, r_schedule.month, r_schedule.day, 
+    r_schedule.period 
+    FROM public.r_period INNER JOIN public.r_schedule ON r_period.schedule_id = r_schedule.id
+    WHERE r_period.uid = ${uid} AND r_period.status = 1;`;
     return connection.pgSQL(_sql);
 };
 const getUserTodoAll=(uid)=>{
-    let _sql = `SELECT * FROM public.r_period WHERE uid = ${uid} AND (status = 1 OR status = 3);`;
+    let _sql = `SELECT r_period.id, r_period.status, r_schedule.year, r_schedule.month, r_schedule.day, 
+    r_schedule.period 
+    FROM public.r_period INNER JOIN public.r_schedule ON r_period.schedule_id = r_schedule.id
+    WHERE r_period.uid = ${uid} AND (r_period.status = 1 OR r_period.status = 3);`;
     return connection.pgSQL(_sql);
 };
 const getUserTodoDay=(year, month, day, uid)=>{
