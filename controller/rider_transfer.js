@@ -112,13 +112,14 @@ const acceptOthersTransfer = async ctx =>{
     let car = ctx.request.body.car;
     let transfer = await  RTransferModel.getTransferById(id);
     let periods = transfer[0].periods.split(",");
-    let uidB = transfer[0].uidB;
-    let mobileB = transfer[0].mobileB;
+    let uidB = transfer[0].acceptor_id;
+    let mobileB = transfer[0].acceptor_mobile;
     let uidBPeriods = [];  // 骑手B待完成相冲突的时段
     for (let i=0; i< periods.length; i++) {
         let period = await RPeriodModel.getPeriod(periods[i]);
         let schedule_id = period[0].schedule_id;
         let uidBPeriod = await RPeriodModel.getPeriodByUidScheduleId(uidB, schedule_id);
+        console.log(uidBPeriod);
         if (uidBPeriod.length > 0) {
             uidBPeriods.push(uidBPeriod[0])
         }
