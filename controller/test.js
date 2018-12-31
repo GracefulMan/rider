@@ -69,8 +69,8 @@ const testInfo = async ctx =>{
     let periodsArray = [3, 5];
     let timeA = [];
     for (let i=0; i<periodsArray.length; i++) {
-        let period = await RPeriodModel.getPeriod(1);
-        let test = await RPeriodModel.getPeriod(1);
+        let period = await RPeriodModel.getPeriod(periodsArray[i]);
+        let test = await RPeriodModel.getPeriod(periodsArray[i]);
         console.log(period);
         console.log(test);
         let start_time = period[0].start_time;
