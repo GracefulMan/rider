@@ -94,7 +94,7 @@ exports.query = (sql,values)=>{
 // 创建连接池
 // var poolPG = new pg.Pool(configPG);
 const poolPG = new pg.Pool({
-    connectionString:config.connectionString
+    connectionString:config.connectionString.runnerdev
 });
 
 
