@@ -72,7 +72,7 @@ const testInfo = async ctx =>{
         let period = await RPeriodModel.getPeriod(1);
         let test = await RPeriodModel.getPeriod(1);
         console.log(period);
-        console.log(period);
+        console.log(test);
         //let start_time = period[0].start_time;
         //console.log(start_time);
         //let date = new Date(start_time);
