@@ -66,18 +66,18 @@ const getDayTodo = async ctx =>{
 };
 
 const testInfo = async ctx =>{
-    let periodsArray = [1, 3, 5];
+    let periodsArray = [3, 5];
     let timeA = [];
     for (let i=0; i<periodsArray.length; i++) {
         let period = await RPeriodModel.getPeriod(1);
         let test = await RPeriodModel.getPeriod(1);
         console.log(period);
         console.log(test);
-        //let start_time = period[0].start_time;
-        //console.log(start_time);
-        //let date = new Date(start_time);
-        //console.log(date);
-        //timeA.push(date);
+        let start_time = period[0].start_time;
+        console.log(start_time);
+        let date = new Date(start_time);
+        console.log(date);
+        timeA.push(date);
     }
     let result = {};
     result['sql'] = timeA;
