@@ -90,7 +90,7 @@ exports.query = (sql,values)=>{
 };
 
 // test create postgreSQL connection pool
-var configPG = {
+const configPG = {
     host: "101.132.146.158",
     user: "postgres",
     database: "rider",
@@ -102,8 +102,14 @@ var configPG = {
     idleTimeoutMillis: 3000, //连接最大空闲时间 3s
 };
 
+const connectionString = 'postgresql://postgres:123456@101.132.146.158:5432/rider';
+
 // 创建连接池
-var poolPG = new pg.Pool(configPG);
+// var poolPG = new pg.Pool(configPG);
+const poolPG = new pg.Pool({
+    connectionString: connectionString
+});
+
 
 exports.pgSQL = async (sql,values)=>{
     let connect = await poolPG.connect();
