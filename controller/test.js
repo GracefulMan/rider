@@ -70,12 +70,14 @@ const testInfo = async ctx =>{
     let periodsArray = [3, 5];
     let timeA = [];
     let timeB = [];
+    let firstTime = 10000000000000;
     for (let i=0; i<periodsArray.length; i++) {
         let period = await RPeriodModel.getPeriod(periodsArray[i]);
         timeA.push(period[0]);
-        let time = commonFunction.timeUTC(period[0].start_time);
-        timeB.push(time);
+        let timestamp = commonFunction.timeUTC(period[0].start_time);
+        firstTime = (timestamp < firstTime ? timestamp : firstTime);
     }
+    timeB.push(firstTime);
     let result = {};
     result['timeA'] = timeA;
     result['timeB'] = timeB;

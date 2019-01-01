@@ -40,36 +40,34 @@ const submitMyTransfer = async ctx =>{
     let mobileA = userA[0].mobile;
     let uidB = userB[0].id;
     let periodsArray = periods.split(",");
-    let uidBPeriods = [];  // 骑手B待完成相冲突的时段
+    let firstTime = 1000000000000000;
     for (let i=0; i<periodsArray.length; i++) {
         let period = await RPeriodModel.getPeriod(periodsArray[i]);
-        console.log(period);
         let schedule_id = period[0].schedule_id;
         let uidBPeriod = await RPeriodModel.getPeriodByUidScheduleId(uidB, schedule_id);
-        if (uidBPeriod.length > 0) {
-            uidBPeriods.push(uidBPeriod[0])
+        if (uidBPeriod.length > 0) {  // 骑手B班次冲突
+            result['return'] = uidBPeriod;
+            result['msg'] = '骑手有冲突班次';
+            ctx.body = result;
+            ctx.status = 403;
+            return
+        }
+        let timestamp = commonFunction.timeUTC(period[0].start_time);
+        firstTime = (timestamp < firstTime ? timestamp : firstTime);
+    }
+    let start_time = '2018-12-31 18:00:00';
+    let submitMyTransfer = await RTransferModel.submitMyTransfer(uidA, mobileA, uidB, mobileB, periods, start_time);  // 代班请求改为转让中状态
+    for (let i=0; i< periodsArray.length; i++) {  // 骑手A对应班次状态改为待完成
+        let period = await RPeriodModel.getPeriod(periodsArray[i]);
+        console.log(period);
+        if (period[0].status === 1) {
+            await RPeriodModel.updatePeriodStatus(periodsArray[i], 3);
         }
     }
-    if (uidBPeriods.length > 0) {  // 骑手B班次冲突
-        result['return'] = uidBPeriods;
-        result['msg'] = '骑手有冲突班次';
-        ctx.body = result;
-        ctx.status = 403;
-    } else {
-        let start_time = '2018-12-31 18:00:00';
-        let submitMyTransfer = await RTransferModel.submitMyTransfer(uidA, mobileA, uidB, mobileB, periods, start_time);  // 代班请求改为转让中状态
-        for (let i=0; i< periodsArray.length; i++) {  // 骑手A对应班次状态改为待完成
-            let period = await RPeriodModel.getPeriod(periodsArray[i]);
-            console.log(period);
-            if (period[0].status === 1) {
-                await RPeriodModel.updatePeriodStatus(periodsArray[i], 3);
-            }
-        }
-        result['return'] = submitMyTransfer;
-        result['msg'] = '提交成功';
-        ctx.body = result;
-        ctx.status = 200;
-    }
+    result['return'] = submitMyTransfer;
+    result['msg'] = '提交成功';
+    ctx.body = result;
+    ctx.status = 200;
 };
 const cancelMyTransfer = async ctx =>{
     let id  = ctx.request.body.id;
