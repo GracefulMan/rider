@@ -4,13 +4,9 @@ const crypto = require('crypto');
 const request = require('request');
 
 const timeUTC = (time)=>{
-    let str = time.toString();
-    let date = time.slice(0, 19);
-    date = date.replace(/-/g, '/');
-    date = date.replace(/T/g, ' ');
-    let date_mid = new Date(date);
-    let date_num = date_mid.getTime();
-    return date_num;
+    let date = new Date(time.toString());
+    let timestamp = date.getTime();
+    return timestamp;
 };
 
 const md5 =(name)=>{
