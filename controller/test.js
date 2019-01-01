@@ -1,5 +1,6 @@
 "use strict";
 const jwt = require('../middleware/jwt');
+const commonFunction = require('../middleware/commonFunction');
 const ScheduleModel = require('../model/schedule');
 const PeriodModel = require('../model/period');
 const TestModel = require('../model/test');
@@ -68,12 +69,16 @@ const getDayTodo = async ctx =>{
 const testInfo = async ctx =>{
     let periodsArray = [3, 5];
     let timeA = [];
+    let timeB = [];
     for (let i=0; i<periodsArray.length; i++) {
         let period = await RPeriodModel.getPeriod(periodsArray[i]);
         timeA.push(period[0]);
+        let time = commonFunction.timeUTC(period[0].start_time);
+        timeB.push(time);
     }
     let result = {};
-    result['sql'] = timeA;
+    result['timeA'] = timeA;
+    result['timeB'] = timeB;
     result['status'] = 'run';
     ctx.body = result;
     ctx.status = 200;

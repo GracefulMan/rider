@@ -3,6 +3,15 @@ const config = require('../config');
 const crypto = require('crypto');
 const request = require('request');
 
+const timeUTC = (time)=>{
+    let date = time.slice(0, 19);
+    date = date.replace(/-/g, '/');
+    date = date.replace(/T/g, ' ');
+    let date_mid = new Date(date);
+    let date_num = date_mid.getTime();
+    return date_num;
+};
+
 const md5 =(name)=>{
     let time=new Date();
     let string = time.toString()+name;
@@ -127,6 +136,8 @@ const apireq = (url)=> new Promise((resolve, reject) => request.get(url, (err, r
 
 
 module.exports = {
+    timeUTC,
+
     encodeString,
     decodeString,
     stringToArray,
