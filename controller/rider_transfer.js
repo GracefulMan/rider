@@ -1,5 +1,7 @@
 "use strict";
 const jwt = require('../middleware/jwt');
+const commonFunction = require('../middleware/commonFunction');
+
 const RScheduleModel = require('../model/rider_schedule');
 const RPeriodModel = require('../model/rider_period');
 const RUserModel = require('../model/rider_user');
@@ -55,7 +57,7 @@ const submitMyTransfer = async ctx =>{
         let timestamp = commonFunction.timeUTC(period[0].start_time);
         firstTime = (timestamp < firstTime ? timestamp : firstTime);
     }
-    let start_time = '2018-12-31 18:00:00';
+    let start_time = commonFunction.timeDate(firstTime);
     let submitMyTransfer = await RTransferModel.submitMyTransfer(uidA, mobileA, uidB, mobileB, periods, start_time);  // 代班请求改为转让中状态
     for (let i=0; i< periodsArray.length; i++) {  // 骑手A对应班次状态改为待完成
         let period = await RPeriodModel.getPeriod(periodsArray[i]);
