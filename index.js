@@ -2,7 +2,7 @@
 const Koa = require('koa');
 const config = require('./config');
 const bodyParser = require('koa-bodyparser');
-const mysql = require('mysql');
+//const mysql = require('mysql');
 const pg = require('pg');
 const logger = require('koa-logger');
 //const simpleServer1 = require('simple-server')(config.fileDir1,config.filePort1);
@@ -64,6 +64,7 @@ console.log(`listening on port ${config.port}...`);
 
 
 //create mysql connection pool
+/*
 const pool = mysql.createPool(
     {
         host:config.database.HOST,
@@ -88,6 +89,7 @@ exports.query = (sql,values)=>{
         })
     })
 };
+*/
 
 // test create postgreSQL connection pool
 
