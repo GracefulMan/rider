@@ -78,6 +78,7 @@ const testInfo = async ctx =>{
         firstTime = (timestamp < firstTime ? timestamp : firstTime);
     }
     timeB.push(firstTime);
+    timeB.push(commonFunction.timeDate(firstTime));
     let result = {};
     result['timeA'] = timeA;
     result['timeB'] = timeB;

@@ -9,6 +9,16 @@ const timeUTC = (time)=>{
     return timestamp;
 };
 
+const timeDate = (time)=>{
+    let date_ch = new Date(time);
+    let year = date_ch.getFullYear();
+    let month = date_ch.getMonth() + 1;
+    let day = date_ch.getDate();
+    let date = year + '-' + (month < 10 ? '0' + month : month) + '-' + (day < 10 ? '0' + day : day) +  ' '
+        + date_ch.toTimeString().substr(0,8);
+    return date;
+};
+
 const md5 =(name)=>{
     let time=new Date();
     let string = time.toString()+name;
@@ -134,6 +144,7 @@ const apireq = (url)=> new Promise((resolve, reject) => request.get(url, (err, r
 
 module.exports = {
     timeUTC,
+    timeDate,
 
     encodeString,
     decodeString,
