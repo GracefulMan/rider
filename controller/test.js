@@ -70,14 +70,7 @@ const testInfo = async ctx =>{
     let timeA = [];
     for (let i=0; i<periodsArray.length; i++) {
         let period = await RPeriodModel.getPeriod(periodsArray[i]);
-        let test = await RPeriodModel.getPeriod(periodsArray[i]);
-        console.log(period);
-        console.log(test);
-        let start_time = period[0].start_time;
-        console.log(start_time);
-        let date = new Date(start_time);
-        console.log(date);
-        timeA.push(date);
+        timeA.push(period[0]);
     }
     let result = {};
     result['sql'] = timeA;
