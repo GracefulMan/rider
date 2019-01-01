@@ -5,6 +5,8 @@ const request = require('request');
 
 const timeUTC = (time)=>{
     console.log(time);
+    let str = time.toString();
+    console.log(str);
     let date = time.slice(0, 19);
     date = date.replace(/-/g, '/');
     date = date.replace(/T/g, ' ');
