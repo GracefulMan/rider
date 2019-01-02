@@ -1,10 +1,9 @@
 "use strict";
 const jwt = require('../middleware/jwt');
-const RUserModel =  require('../model/rider_user');
-const RPeriodModel =  require('../model/rider_period');
-const commonFunction = require('../middleware/commonFunction');
 const config = require('../config');
-const request = require('request');
+
+const RUserModel =  require('../model/rider_user');
+const commonFunction = require('../middleware/commonFunction');
 
 // Todo 获取用户当前是否有排班
 /*
@@ -66,7 +65,7 @@ const addUser = async ctx =>{
 const userLoginByWechat = async ctx =>{
     let code = ctx.query.code;
     let url ="https://api.weixin.qq.com/sns/jscode2session?appid="+config.appid+"&secret="+config.appsecret+"&js_code="+code+"&grant_type=authorization_code";
-    let openId = await commonFunction.apireq(url);
+    let openId = await commonFunction.openidAPI(url);
     if (openId === undefined || openId.length !== 28) {
         ctx.status = 410;
         return;

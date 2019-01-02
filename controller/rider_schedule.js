@@ -2,8 +2,6 @@
 const jwt = require('../middleware/jwt');
 const RScheduleModel = require('../model/rider_schedule');
 const RPeriodModel = require('../model/rider_period');
-const RUserModel = require('../model/rider_user');
-const RTransferModel = require('../model/rider_transfer');
 
 // Todo 添加班次信息
 

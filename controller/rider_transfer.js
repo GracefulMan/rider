@@ -2,7 +2,6 @@
 const jwt = require('../middleware/jwt');
 const commonFunction = require('../middleware/commonFunction');
 
-const RScheduleModel = require('../model/rider_schedule');
 const RPeriodModel = require('../model/rider_period');
 const RUserModel = require('../model/rider_user');
 const RTransferModel = require('../model/rider_transfer');
@@ -36,6 +35,11 @@ const submitMyTransfer = async ctx =>{
         result['msg'] = '填入的骑手用户不存在或未绑定微信';
         ctx.body = result;
         ctx.status = 406;
+        return
+    } else if (userB[0].id === uidA) {
+        result['msg'] = '请勿填写自己的手机号码';
+        ctx.body = result;
+        ctx.status = 416;
         return
     }
     let userA = await RUserModel.getUserInfoById(uidA);
